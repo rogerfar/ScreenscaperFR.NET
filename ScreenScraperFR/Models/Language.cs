@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ScreenScraperFR;
 
@@ -9,7 +8,6 @@ internal class LanguagesResponse
     public Dictionary<Int32, Language> Languages { get; set; } = new();
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class Language
 {
     /// <summary>
@@ -70,5 +68,5 @@ public class Language
     /// Media files associated with the language (e.g., icons, backgrounds).
     /// </summary>
     [JsonPropertyName("medias")]
-    public Media? Medias { get; set; }
+    public Dictionary<String, String>? Media { get; set; }
 }

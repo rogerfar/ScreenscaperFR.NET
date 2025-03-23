@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ScreenScraperFR;
 
@@ -9,7 +8,6 @@ internal class RegionsResponse
     public Dictionary<Int32, Region> Regions { get; set; } = new();
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class Region
 {
     /// <summary>
@@ -34,31 +32,31 @@ public class Region
     /// Name of the region in German.
     /// </summary>
     [JsonPropertyName("nom_de")]
-    public required String NameDe { get; set; }
+    public String? NameDe { get; set; }
 
     /// <summary>
     /// Name of the region in English.
     /// </summary>
     [JsonPropertyName("nom_en")]
-    public required String NameEn { get; set; }
+    public String? NameEn { get; set; }
 
     /// <summary>
     /// Name of the region in Spanish.
     /// </summary>
     [JsonPropertyName("nom_es")]
-    public required String NameEs { get; set; }
+    public String? NameEs { get; set; }
 
     /// <summary>
     /// Name of the region in Italian.
     /// </summary>
     [JsonPropertyName("nom_it")]
-    public required String NameIt { get; set; }
+    public String? NameIt { get; set; }
 
     /// <summary>
     /// Name of the region in Portuguese.
     /// </summary>
     [JsonPropertyName("nom_pt")]
-    public required String NamePt { get; set; }
+    public String? NamePt { get; set; }
 
     /// <summary>
     /// Identifier of the parent region (0 if it’s a top-level region).
@@ -70,5 +68,5 @@ public class Region
     /// Media files associated with the region (e.g., icons, backgrounds).
     /// </summary>
     [JsonPropertyName("medias")]
-    public Media? Medias { get; set; }
+    public Dictionary<String, String>? Media { get; set; }
 }

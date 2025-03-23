@@ -41,13 +41,13 @@ jobs:
           dotnet-version: '8.0'
 
       - name: Restore dependencies
-        run: dotnet restore AllDebridNET/AllDebridNET.csproj
+        run: dotnet restore ScreenScraperFR/ScreenScraperFR.csproj
 
       - name: Build
-        run: dotnet build AllDebridNET/AllDebridNET.csproj -c Release --no-restore -p:Version=${{ env.NEXT_VERSION }} -p:AssemblyVersion=${{ env.NEXT_VERSION }}
+        run: dotnet build ScreenScraperFR/ScreenScraperFR.csproj -c Release --no-restore -p:Version=${{ env.NEXT_VERSION }} -p:AssemblyVersion=${{ env.NEXT_VERSION }}
 
       - name: Pack NuGet package
-        run: dotnet pack AllDebridNET/AllDebridNET.csproj -c Release --no-build -p:Version=${{ env.NEXT_VERSION }} -p:AssemblyVersion=${{ env.NEXT_VERSION }}
+        run: dotnet pack ScreenScraperFR/ScreenScraperFR.csproj -c Release --no-build -p:Version=${{ env.NEXT_VERSION }} -p:AssemblyVersion=${{ env.NEXT_VERSION }}
 
       - name: Push to NuGet
-        run: dotnet nuget push AllDebridNET/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ScreenScraperFR/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

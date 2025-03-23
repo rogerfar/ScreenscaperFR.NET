@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ScreenScraperFR.Models;
 
@@ -12,14 +11,12 @@ internal class SearchGamesResponse
     public List<SearchGame> Games { get; set; } = [];
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class SearchGame
 {
     /// <summary>
     /// Game ID (numeric identifier).
     /// </summary>
     [JsonPropertyName("id")]
-
     public Int32 Id { get; set; }
 
     /// <summary>
@@ -69,21 +66,18 @@ public class SearchGame
     /// Screen rotation for the game (used mainly for arcade).
     /// </summary>
     [JsonPropertyName("rotation")]
-
     public Int32 Rotation { get; set; }
 
     /// <summary>
     /// Control configuration (numeric identifier).
     /// </summary>
     [JsonPropertyName("controles")]
-
     public Int32 Controles { get; set; }
 
     /// <summary>
     /// Number of colors used in the game (for arcade).
     /// </summary>
     [JsonPropertyName("couleurs")]
-
     public Int32 Colors { get; set; }
 
     /// <summary>
@@ -96,7 +90,7 @@ public class SearchGame
     /// Classification/rating organizations (e.g., ESRB, PEGI).
     /// </summary>
     [JsonPropertyName("classifications")]
-    public List<Classification> Classifications { get; set; } = [];
+    public List<SearchGameClassification> Classifications { get; set; } = [];
 
     /// <summary>
     /// Release dates by region.
@@ -126,7 +120,7 @@ public class SearchGame
     /// Media associated with the game (images, videos, manuals, etc.).
     /// </summary>
     [JsonPropertyName("medias")]
-    public List<Media> Medias { get; set; } = [];
+    public List<SearchGame>? Medias { get; set; } = [];
 }
 
 /// <summary>
@@ -159,7 +153,6 @@ public class SearchGameReleaseDate
 public class SearchGameText
 {
     [JsonPropertyName("id")]
-
     public Int32 Id { get; set; }
 
     [JsonPropertyName("text")]
@@ -172,7 +165,6 @@ public class SearchGameText
 public class SearchGameRelation
 {
     [JsonPropertyName("id")]
-
     public Int32 Id { get; set; }
 
     /// <summary>
@@ -235,7 +227,6 @@ public class SearchGameTextNode
 public class SearchGameSystem
 {
     [JsonPropertyName("id")]
-
     public Int32 Id { get; set; }
 
     [JsonPropertyName("text")]
@@ -245,6 +236,48 @@ public class SearchGameSystem
     /// Parent system ID (if part of a hierarchy).
     /// </summary>
     [JsonPropertyName("parentid")]
-
     public Int32? Parentid { get; set; }
+}
+
+
+public class SearchGameMedia
+{
+    [JsonPropertyName("crc")]
+    public required String Crc { get; set; }
+
+    [JsonPropertyName("format")]
+    public required String Format { get; set; }
+
+    [JsonPropertyName("md5")]
+    public required String Md5 { get; set; }
+
+    [JsonPropertyName("parent")]
+    public required String Parent { get; set; }
+
+    [JsonPropertyName("region")]
+    public String? Region { get; set; }
+
+    [JsonPropertyName("sha1")]
+    public required String Sha1 { get; set; }
+
+    [JsonPropertyName("size")]
+    public Int64 Size { get; set; }
+
+    [JsonPropertyName("type")]
+    public required String Type { get; set; }
+
+    [JsonPropertyName("url")]
+    public required String Url { get; set; }
+
+    [JsonPropertyName("support")]
+    public Int64? Support { get; set; }
+
+    [JsonPropertyName("subparent")]
+    public String? Subparent { get; set; }
+
+    [JsonPropertyName("id")]
+    public Int64? Id { get; set; }
+
+    [JsonPropertyName("version")]
+    public String? Version { get; set; }
 }

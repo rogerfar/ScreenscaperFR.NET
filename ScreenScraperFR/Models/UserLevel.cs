@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ScreenScraperFR;
 
@@ -12,7 +11,6 @@ internal class UserLevelsResponse
     public Dictionary<String, UserLevel> UserLevels { get; set; } = new();
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class UserLevel
 {
     /// <summary>
@@ -65,7 +63,6 @@ public class UserLevel
                 "Chuck Norris" => "Chuck Norris",
                 _ => NameFr
             };
-
         }
     }
 }

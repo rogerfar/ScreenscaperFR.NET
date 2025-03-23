@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 
 namespace ScreenScraperFR.Models;
@@ -10,7 +9,6 @@ internal class PlayerCountsResponse
     public Dictionary<String, PlayerCount> PlayerCounts { get; set; } = [];
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class PlayerCount
 {
     /// <summary>

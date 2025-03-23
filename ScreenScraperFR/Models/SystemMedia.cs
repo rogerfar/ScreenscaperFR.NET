@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ScreenScraperFR;
 
@@ -9,7 +8,6 @@ internal class SystemMediasResponse
     public Dictionary<Int32, SystemMedia> Medias { get; set; } = new();
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class SystemMedia
 {
     /// <summary>

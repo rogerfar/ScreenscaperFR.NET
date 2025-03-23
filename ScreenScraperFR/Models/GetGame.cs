@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ScreenScraperFR;
 
@@ -9,7 +8,6 @@ internal class GetGameResponse
     public GetGame? Game { get; set; }
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class GetGame
 {
     [JsonPropertyName("actions")]

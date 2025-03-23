@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ScreenScraperFR;
 
@@ -9,7 +8,6 @@ internal class ClassificationsResponse
     public Dictionary<Int32, Classification> Classifications { get; set; } = new();
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class Classification
 {
     /// <summary>
@@ -22,7 +20,7 @@ public class Classification
     /// Short name of the classification (e.g., PEGI:12, ESRB:T).
     /// </summary>
     [JsonPropertyName("nomcourt")]
-    public String ShortName { get; set; }
+    public required String ShortName { get; set; }
 
     /// <summary>
     /// Name in French (optional).
@@ -70,5 +68,5 @@ public class Classification
     /// Associated media resources (e.g., pictograms).
     /// </summary>
     [JsonPropertyName("medias")]
-    public Media? Medias { get; set; }
+    public Dictionary<String, String>? Media { get; set; }
 }

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ScreenScraperFR;
 
@@ -9,7 +8,6 @@ internal class UserInfoResponse
     public UserInfo? UserInfo { get; set; }
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class UserInfo
 {
     /// <summary>
@@ -79,7 +77,6 @@ public class UserInfo
     [JsonPropertyName("quotarefu")]
     public Int32 RejectionRate { get; set; }
 
-    // Threads
     /// <summary>
     /// Number of threads allowed for the user (also applies to non-registered users).
     /// </summary>
@@ -123,7 +120,6 @@ public class UserInfo
     [JsonPropertyName("maxrequestskoperday")]
     public Int32 MaxFailedRequestsPerDay { get; set; }
 
-    // Miscellaneous
     /// <summary>
     /// Total number of visits to ScreenScraper.
     /// </summary>
@@ -131,14 +127,14 @@ public class UserInfo
     public Int32 VisitCount { get; set; }
 
     /// <summary>
-    /// GameReleaseDate and time of the user's last visit.
+    /// Date and time of the user's last visit.
     /// </summary>
     [JsonPropertyName("datedernierevisite")]
     [JsonConverter(typeof(JsonDateTimeOffsetConverter))]
     public DateTimeOffset LastVisitDate { get; set; }
 
     /// <summary>
-    /// User's favorite region (e.g., france, europe, usa, japan).
+    /// User's favorite region.
     /// </summary>
     [JsonPropertyName("favregion")]
     public String? FavoriteRegion { get; set; }

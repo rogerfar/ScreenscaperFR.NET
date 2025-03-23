@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ScreenScraperFR;
 
@@ -9,7 +8,6 @@ internal class SystemsResponse
     public List<System> Systems { get; set; } = [];
 }
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class System
 {
     [JsonPropertyName("id")]
@@ -23,34 +21,34 @@ public class System
     /// </summary>
 
     [JsonPropertyName("extensions")]
-    public required String Extensions { get; set; }
+    public String? Extensions { get; set; }
 
     /// <summary>
     /// Name of the company that produced the system.
     /// </summary>
 
     [JsonPropertyName("compagnie")]
-    public required String Company { get; set; }
+    public String? Company { get; set; }
 
     /// <summary>
     /// Type of system (e.g., Arcade, Console, Handheld, etc.).
     /// </summary>
     [JsonPropertyName("type")]
-    public required String Type { get; set; }
+    public String? Type { get; set; }
 
     /// <summary>
     /// Start year of production.
     /// </summary>
 
     [JsonPropertyName("datedebut")]
-    public Int32 StartYear { get; set; }
+    public String? StartYear { get; set; }
 
     /// <summary>
     /// End year of production.
     /// </summary>
 
     [JsonPropertyName("datefin")]
-    public Int32 EndYear { get; set; }
+    public String? EndYear { get; set; }
 
     /// <summary>
     /// Type(s) of ROMs used by the system.
@@ -92,41 +90,41 @@ public class SystemNames
     /// US name of the system.
     /// </summary>
     [JsonPropertyName("nom_us")]
-    public required String NameUs { get; set; }
+    public String? NameUs { get; set; }
 
     /// <summary>
     /// Name used in Recalbox frontend.
     /// </summary>
     [JsonPropertyName("nom_recalbox")]
-    public required String NameRecalbox { get; set; }
+    public String? NameRecalbox { get; set; }
 
     /// <summary>
     /// Name used in RetroPie frontend.
     /// </summary>
     [JsonPropertyName("nom_retropie")]
-    public required String NameRetropie { get; set; }
+    public String? NameRetropie { get; set; }
 
     /// <summary>
     /// Name used in LaunchBox frontend.
     /// </summary>
     [JsonPropertyName("nom_launchbox")]
-    public required String NameLaunchbox { get; set; }
+    public String? NameLaunchbox { get; set; }
 
     /// <summary>
     /// Name used in HyperSpin frontend.
     /// </summary>
     [JsonPropertyName("nom_hyperspin")]
-    public required String NameHyperspin { get; set; }
+    public String? NameHyperspin { get; set; }
 
     /// <summary>
     /// Common names used for the system.
     /// </summary>
     [JsonPropertyName("noms_commun")]
-    public required String CommonNames { get; set; }
+    public String? CommonNames { get; set; }
 
     /// <summary>
     /// Japanese name of the system.
     /// </summary>
     [JsonPropertyName("nom_jp")]
-    public required String NameJp { get; set; }
+    public String? NameJp { get; set; }
 }

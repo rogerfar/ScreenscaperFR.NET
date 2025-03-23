@@ -68,13 +68,13 @@ public interface IScreenScraperFRClient
     /// Retrieves the list of available media types for game systems.
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<List<SystemMedia>> GetSystemMedias(CancellationToken cancellationToken = default);
+    Task<List<SystemMedia>> GetSystemMedia(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of available media types for games.
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<List<GameMedia>> GetGameMedias(CancellationToken cancellationToken = default);
+    Task<List<GameMedia>> GetGameMedia(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of available text information fields for games (e.g., summary, developer).
@@ -103,7 +103,7 @@ public interface IScreenScraperFRClient
     /// <param name="maxHeight">Optional: Maximum height of the returned image.</param>
     /// <param name="outputFormat">Optional: Format of the returned image (png or jpg).</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<MediaResponse> GetGroupMedia(Int32 groupId,
+    Task<MediaResponse> GetGroupImage(Int32 groupId,
                                       String media,
                                       String? mediaFormat = null,
                                       String? crc = null,
@@ -128,7 +128,7 @@ public interface IScreenScraperFRClient
     /// <param name="maxHeight">Optional: Maximum height of the returned image.</param>
     /// <param name="outputFormat">Optional: Format of the returned image (png or jpg).</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<MediaResponse> GetCompanyMedia(Int32 companyId,
+    Task<MediaResponse> GetCompanyImage(Int32 companyId,
                                         String media,
                                         String? mediaFormat = null,
                                         String? crc = null,
@@ -159,7 +159,7 @@ public interface IScreenScraperFRClient
     /// <param name="maxHeight">Optional: Maximum image height.</param>
     /// <param name="outputFormat">Optional: Desired output image format.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<MediaResponse> GetSystemMedia(Int32 systemId,
+    Task<MediaResponse> GetSystemImage(Int32 systemId,
                                        String media,
                                        String? mediaFormat = null,
                                        String? crc = null,
@@ -222,7 +222,7 @@ public interface IScreenScraperFRClient
     /// Downloads image media for a specific game.
     /// May return a status string (e.g., MD5OK) instead of media if local hash matches server.
     /// </summary>
-    Task<MediaResponse> GetGameMedia(Int32 systemId,
+    Task<MediaResponse> GetGameImage(Int32 systemId,
                                      Int32 gameId,
                                      String media,
                                      String? mediaFormat = null,
@@ -360,14 +360,21 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response.Classifications.Values.ToList();
     }
 
-    public async Task<List<SystemMedia>> GetSystemMedias(CancellationToken cancellationToken = default)
+    public async Task<List<SystemMedia>> GetSystemMedia(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<SystemMediasResponse>("mediasSystemeListe.php", false, null, cancellationToken);
 
         return response.Medias.Values.ToList();
     }
+    
+    public async Task<List<System>> GetSystems(CancellationToken cancellationToken = default)
+    {
+        var response = await _requests.GetRequestAsync<SystemsResponse>("systemesListe.php", false, null, cancellationToken);
 
-    public async Task<List<GameMedia>> GetGameMedias(CancellationToken cancellationToken = default)
+        return response.Systems;
+    }
+
+    public async Task<List<GameMedia>> GetGameMedia(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<GameMediasResponse>("mediasJeuListe.php", false, null, cancellationToken);
 
@@ -388,68 +395,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response.Infos.Values.ToList();
     }
 
-    public async Task<MediaResponse> GetGroupMedia(Int32 groupId,
-                                                   String media,
-                                                   String? mediaFormat = null,
-                                                   String? crc = null,
-                                                   String? md5 = null,
-                                                   String? sha1 = null,
-                                                   Int32? maxWidth = null,
-                                                   Int32? maxHeight = null,
-                                                   String? outputFormat = null,
-                                                   CancellationToken cancellationToken = default)
-    {
-        var parameters = new Dictionary<String, String>
-        {
-            {
-                "groupid", groupId.ToString()
-            },
-            {
-                "media", media
-            }
-        };
-
-        if (!String.IsNullOrWhiteSpace(mediaFormat))
-        {
-            parameters.Add("mediaformat", mediaFormat);
-        }
-
-        if (!String.IsNullOrWhiteSpace(crc))
-        {
-            parameters.Add("crc", crc);
-        }
-
-        if (!String.IsNullOrWhiteSpace(md5))
-        {
-            parameters.Add("md5", md5);
-        }
-
-        if (!String.IsNullOrWhiteSpace(sha1))
-        {
-            parameters.Add("sha1", sha1);
-        }
-
-        if (maxWidth.HasValue)
-        {
-            parameters.Add("maxwidth", maxWidth.Value.ToString());
-        }
-
-        if (maxHeight.HasValue)
-        {
-            parameters.Add("maxheight", maxHeight.Value.ToString());
-        }
-
-        if (!String.IsNullOrWhiteSpace(outputFormat))
-        {
-            parameters.Add("outputformat", outputFormat);
-        }
-
-        var response = await _requests.GetMediaRequestAsync("mediaGroup.php", true, parameters, cancellationToken);
-
-        return response;
-    }
-
-    public async Task<MediaResponse> GetCompanyMedia(Int32 companyId,
+    public async Task<MediaResponse> GetCompanyImage(Int32 companyId,
                                                      String media,
                                                      String? mediaFormat = null,
                                                      String? crc = null,
@@ -510,14 +456,133 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response;
     }
 
-    public async Task<List<System>> GetSystems(CancellationToken cancellationToken = default)
+    public async Task<MediaResponse> GetGameImage(Int32 systemId,
+                                                  Int32 gameId,
+                                                  String media,
+                                                  String? mediaFormat = null,
+                                                  String? crc = null,
+                                                  String? md5 = null,
+                                                  String? sha1 = null,
+                                                  Int32? maxWidth = null,
+                                                  Int32? maxHeight = null,
+                                                  String? outputFormat = null,
+                                                  CancellationToken cancellationToken = default)
     {
-        var response = await _requests.GetRequestAsync<SystemsResponse>("systemesListe.php", false, null, cancellationToken);
+        var parameters = new Dictionary<String, String>
+        {
+            {
+                "systemeid", systemId.ToString()
+            },
+            {
+                "jeuid", gameId.ToString()
+            },
+            {
+                "media", media
+            }
+        };
 
-        return response.Systems;
+        if (!String.IsNullOrWhiteSpace(mediaFormat))
+        {
+            parameters.Add("mediaformat", mediaFormat);
+        }
+
+        if (!String.IsNullOrWhiteSpace(crc))
+        {
+            parameters.Add("crc", crc);
+        }
+
+        if (!String.IsNullOrWhiteSpace(md5))
+        {
+            parameters.Add("md5", md5);
+        }
+
+        if (!String.IsNullOrWhiteSpace(sha1))
+        {
+            parameters.Add("sha1", sha1);
+        }
+
+        if (maxWidth.HasValue)
+        {
+            parameters.Add("maxwidth", maxWidth.Value.ToString());
+        }
+
+        if (maxHeight.HasValue)
+        {
+            parameters.Add("maxheight", maxHeight.Value.ToString());
+        }
+
+        if (!String.IsNullOrWhiteSpace(outputFormat))
+        {
+            parameters.Add("outputformat", outputFormat);
+        }
+
+        var response = await _requests.GetMediaRequestAsync("mediaJeu.php", true, parameters, cancellationToken);
+
+        return response;
     }
 
-    public async Task<MediaResponse> GetSystemMedia(Int32 systemId,
+    public async Task<MediaResponse> GetGroupImage(Int32 groupId,
+                                                   String media,
+                                                   String? mediaFormat = null,
+                                                   String? crc = null,
+                                                   String? md5 = null,
+                                                   String? sha1 = null,
+                                                   Int32? maxWidth = null,
+                                                   Int32? maxHeight = null,
+                                                   String? outputFormat = null,
+                                                   CancellationToken cancellationToken = default)
+    {
+        var parameters = new Dictionary<String, String>
+        {
+            {
+                "groupid", groupId.ToString()
+            },
+            {
+                "media", media
+            }
+        };
+
+        if (!String.IsNullOrWhiteSpace(mediaFormat))
+        {
+            parameters.Add("mediaformat", mediaFormat);
+        }
+
+        if (!String.IsNullOrWhiteSpace(crc))
+        {
+            parameters.Add("crc", crc);
+        }
+
+        if (!String.IsNullOrWhiteSpace(md5))
+        {
+            parameters.Add("md5", md5);
+        }
+
+        if (!String.IsNullOrWhiteSpace(sha1))
+        {
+            parameters.Add("sha1", sha1);
+        }
+
+        if (maxWidth.HasValue)
+        {
+            parameters.Add("maxwidth", maxWidth.Value.ToString());
+        }
+
+        if (maxHeight.HasValue)
+        {
+            parameters.Add("maxheight", maxHeight.Value.ToString());
+        }
+
+        if (!String.IsNullOrWhiteSpace(outputFormat))
+        {
+            parameters.Add("outputformat", outputFormat);
+        }
+
+        var response = await _requests.GetMediaRequestAsync("mediaGroup.php", true, parameters, cancellationToken);
+
+        return response;
+    }
+
+    public async Task<MediaResponse> GetSystemImage(Int32 systemId,
                                                     String media,
                                                     String? mediaFormat = null,
                                                     String? crc = null,
@@ -621,151 +686,6 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response;
     }
 
-    public async Task<List<SearchGame>> SearchGames(String name, Int32? systemId = null, CancellationToken cancellationToken = default)
-    {
-        var parameters = new Dictionary<String, String>
-        {
-            {
-                "recherche", name
-            }
-        };
-
-        if (systemId != null)
-        {
-            parameters.Add("systemId", systemId.Value.ToString());
-        }
-
-        var response = await _requests.GetRequestAsync<SearchGamesResponse>("jeuRecherche.php", true, parameters, cancellationToken);
-
-        return response.Games.ToList();
-    }
-
-    public async Task<GetGame?> GetGame(Int32 systemId,
-                                        String romType,
-                                        String? romName = null,
-                                        Int32? romSize = null,
-                                        String? serialNumber = null,
-                                        Int32? gameId = null,
-                                        String? crc = null,
-                                        String? md5 = null,
-                                        String? sha1 = null,
-                                        CancellationToken cancellationToken = default)
-    {
-        var parameters = new Dictionary<String, String>
-        {
-            {
-                "systemeid", systemId.ToString()
-            },
-            {
-                "romtype", romType
-            }
-        };
-
-        if (romName != null)
-        {
-            parameters.Add("romnom", romName);
-        }
-
-        if (romSize != null)
-        {
-            parameters.Add("romtaille", romSize.Value.ToString());
-        }
-
-        if (serialNumber != null)
-        {
-            parameters.Add("serialnum", serialNumber);
-        }
-
-        if (gameId != null)
-        {
-            parameters.Add("gameid", gameId.Value.ToString());
-        }
-
-        if (crc != null)
-        {
-            parameters.Add("crc", crc);
-        }
-
-        if (md5 != null)
-        {
-            parameters.Add("md5", md5);
-        }
-
-        if (sha1 != null)
-        {
-            parameters.Add("sha1", sha1);
-        }
-
-        var response = await _requests.GetRequestAsync<GetGameResponse>("jeuInfos.php", true, parameters, cancellationToken);
-
-        return response.Game;
-    }
-
-    public async Task<MediaResponse> GetGameMedia(Int32 systemId,
-                                                  Int32 gameId,
-                                                  String media,
-                                                  String? mediaFormat = null,
-                                                  String? crc = null,
-                                                  String? md5 = null,
-                                                  String? sha1 = null,
-                                                  Int32? maxWidth = null,
-                                                  Int32? maxHeight = null,
-                                                  String? outputFormat = null,
-                                                  CancellationToken cancellationToken = default)
-    {
-        var parameters = new Dictionary<String, String>
-        {
-            {
-                "systemeid", systemId.ToString()
-            },
-            {
-                "jeuid", gameId.ToString()
-            },
-            {
-                "media", media
-            }
-        };
-
-        if (!String.IsNullOrWhiteSpace(mediaFormat))
-        {
-            parameters.Add("mediaformat", mediaFormat);
-        }
-
-        if (!String.IsNullOrWhiteSpace(crc))
-        {
-            parameters.Add("crc", crc);
-        }
-
-        if (!String.IsNullOrWhiteSpace(md5))
-        {
-            parameters.Add("md5", md5);
-        }
-
-        if (!String.IsNullOrWhiteSpace(sha1))
-        {
-            parameters.Add("sha1", sha1);
-        }
-
-        if (maxWidth.HasValue)
-        {
-            parameters.Add("maxwidth", maxWidth.Value.ToString());
-        }
-
-        if (maxHeight.HasValue)
-        {
-            parameters.Add("maxheight", maxHeight.Value.ToString());
-        }
-
-        if (!String.IsNullOrWhiteSpace(outputFormat))
-        {
-            parameters.Add("outputformat", outputFormat);
-        }
-
-        var response = await _requests.GetMediaRequestAsync("mediaJeu.php", true, parameters, cancellationToken);
-
-        return response;
-    }
-
     public async Task<MediaResponse> GetGameVideo(Int32 systemId,
                                                   Int32 gameId,
                                                   String media,
@@ -858,5 +778,85 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         var response = await _requests.GetMediaRequestAsync("mediaManuelJeu.php", true, parameters, cancellationToken);
 
         return response;
+    }
+
+    public async Task<List<SearchGame>> SearchGames(String name, Int32? systemId = null, CancellationToken cancellationToken = default)
+    {
+        var parameters = new Dictionary<String, String>
+        {
+            {
+                "recherche", name
+            }
+        };
+
+        if (systemId != null)
+        {
+            parameters.Add("systemId", systemId.Value.ToString());
+        }
+
+        var response = await _requests.GetRequestAsync<SearchGamesResponse>("jeuRecherche.php", true, parameters, cancellationToken);
+
+        return response.Games.ToList();
+    }
+
+    public async Task<GetGame?> GetGame(Int32 systemId,
+                                        String romType,
+                                        String? romName = null,
+                                        Int32? romSize = null,
+                                        String? serialNumber = null,
+                                        Int32? gameId = null,
+                                        String? crc = null,
+                                        String? md5 = null,
+                                        String? sha1 = null,
+                                        CancellationToken cancellationToken = default)
+    {
+        var parameters = new Dictionary<String, String>
+        {
+            {
+                "systemeid", systemId.ToString()
+            },
+            {
+                "romtype", romType
+            }
+        };
+
+        if (romName != null)
+        {
+            parameters.Add("romnom", romName);
+        }
+
+        if (romSize != null)
+        {
+            parameters.Add("romtaille", romSize.Value.ToString());
+        }
+
+        if (serialNumber != null)
+        {
+            parameters.Add("serialnum", serialNumber);
+        }
+
+        if (gameId != null)
+        {
+            parameters.Add("gameid", gameId.Value.ToString());
+        }
+
+        if (crc != null)
+        {
+            parameters.Add("crc", crc);
+        }
+
+        if (md5 != null)
+        {
+            parameters.Add("md5", md5);
+        }
+
+        if (sha1 != null)
+        {
+            parameters.Add("sha1", sha1);
+        }
+
+        var response = await _requests.GetRequestAsync<GetGameResponse>("jeuInfos.php", true, parameters, cancellationToken);
+
+        return response.Game;
     }
 }

@@ -109,21 +109,21 @@ public class GeneralTest
     }
     
     [Fact]
-    public async Task GetSystemMedias()
+    public async Task GetSystemMedia()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var systemMedias = await client.GetSystemMedias();
+        var systemMedias = await client.GetSystemMedia();
 
         Assert.NotEmpty(systemMedias);
     }
     
     [Fact]
-    public async Task GetGameMedias()
+    public async Task GetGameMedia()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var gameMedias = await client.GetGameMedias();
+        var gameMedias = await client.GetGameMedia();
 
         Assert.NotEmpty(gameMedias);
     }
@@ -149,25 +149,25 @@ public class GeneralTest
     }
     
     [Fact]
-    public async Task GetGroupMedia()
+    public async Task GetGroupImage()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var groupMedia = await client.GetGroupMedia(1, "logo-monochrome");
+        var groupMedia = await client.GetGroupImage(1, "logo-monochrome");
 
-        await File.WriteAllBytesAsync("GetGroupMedia.png", groupMedia.Data!);
+        await File.WriteAllBytesAsync("GetGroupImage.png", groupMedia.Data!);
 
         Assert.NotNull(groupMedia);
     }
     
     [Fact]
-    public async Task GetCompanyMedia()
+    public async Task GetCompanyImage()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var companyMedia = await client.GetCompanyMedia(1, "logo-monochrome");
+        var companyMedia = await client.GetCompanyImage(1, "logo-monochrome");
 
-        await File.WriteAllBytesAsync("GetCompanyMedia.png", companyMedia.Data!);
+        await File.WriteAllBytesAsync("GetCompanyImage.png", companyMedia.Data!);
 
         Assert.NotNull(companyMedia);
     }
@@ -183,13 +183,13 @@ public class GeneralTest
     }
     
     [Fact]
-    public async Task GetSystemMedia()
+    public async Task GetSystemImage()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var systemMedia = await client.GetSystemMedia(1, "wheel(wor)");
+        var systemMedia = await client.GetSystemImage(1, "wheel(wor)");
 
-        await File.WriteAllBytesAsync("GetSystemMedia.png", systemMedia.Data!);
+        await File.WriteAllBytesAsync("GetSystemImage.png", systemMedia.Data!);
 
         Assert.NotNull(systemMedia);
     }
@@ -201,13 +201,13 @@ public class GeneralTest
 
         var systemMedia = await client.GetSystemVideo(1, "video");
 
-        await File.WriteAllBytesAsync("GetSystemMedia.mp4", systemMedia.Data!);
+        await File.WriteAllBytesAsync("GetSystemImage.mp4", systemMedia.Data!);
 
         Assert.NotNull(systemMedia);
     }
     
     [Fact]
-    public async Task SearchGame()
+    public async Task SearchGames()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
@@ -227,25 +227,25 @@ public class GeneralTest
     }
 
     [Fact]
-    public async Task GetGameMedia()
+    public async Task GetGameImage()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
         
-        var gameMedia = await client.GetGameMedia(1, 3, "wheel-hd(wor)");
+        var gameMedia = await client.GetGameImage(1, 3, "wheel-hd(wor)");
 
-        await File.WriteAllBytesAsync("GetGameMedia.png", gameMedia.Data!);
+        await File.WriteAllBytesAsync("GetGameImage.png", gameMedia.Data!);
 
         Assert.NotNull(gameMedia);
     }
 
     [Fact]
-    public async Task GetGameMediaMd5()
+    public async Task GetGameImageByMd5()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var md5 = await CreateMd5("GetGameMedia.png");
+        var md5 = await CreateMd5("GetGameImage.png");
         
-        var gameMedia = await client.GetGameMedia(1, 3, "wheel-hd(wor)", null, null, md5);
+        var gameMedia = await client.GetGameImage(1, 3, "wheel-hd(wor)", null, null, md5);
 
         Assert.Equal(MediaResponseType.Md5Ok, gameMedia.Result);
     }
