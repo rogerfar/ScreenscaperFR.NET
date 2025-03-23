@@ -35,25 +35,25 @@ public class SearchGame
     /// Publisher of the game.
     /// </summary>
     [JsonPropertyName("editeur")]
-    public required SearchGameText Publisher { get; set; }
+    public SearchGameText? Publisher { get; set; }
 
     /// <summary>
     /// Developer of the game.
     /// </summary>
     [JsonPropertyName("developpeur")]
-    public required SearchGameText Developer { get; set; }
+    public SearchGameText? Developer { get; set; }
 
     /// <summary>
     /// Number of players.
     /// </summary>
     [JsonPropertyName("joueurs")]
-    public required SearchGameTextNode PlayerCounts { get; set; }
+    public SearchGameTextNode? PlayerCounts { get; set; }
 
     /// <summary>
     /// Game rating out of 20.
     /// </summary>
     [JsonPropertyName("note")]
-    public required SearchGameTextNode Rating { get; set; }
+    public SearchGameTextNode? Rating { get; set; }
 
     /// <summary>
     /// Whether the game is included in ScreenScraper's TOP Staff selection.
