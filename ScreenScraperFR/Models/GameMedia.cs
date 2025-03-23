@@ -35,7 +35,7 @@ public class GameMediaType
     public required String Category { get; set; }
 
     /// <summary>
-    /// Pipe-separated list of system type IDs where the media is available.
+    /// Pipe-separated list of platform type IDs where the media is available.
     /// </summary>
     [JsonPropertyName("plateformtypes")]
     public required String PlatformTypes { get; set; }
@@ -83,7 +83,7 @@ public class GameMediaType
     /// </summary>
     [JsonPropertyName("multisupports")]
     [JsonConverter(typeof(JsonBooleanConverter))]
-    public Boolean IsMultiSystem { get; set; }
+    public Boolean SupportsMultiplePlatforms { get; set; }
 
     /// <summary>
     /// Indicates if the media supports multiple versions.

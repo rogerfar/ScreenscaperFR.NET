@@ -35,7 +35,7 @@ public class GameInfoField
     public required String Category { get; set; }
 
     /// <summary>
-    /// Pipe-separated list of system type IDs where the info is available.
+    /// Pipe-separated list of platform type IDs where the info is available.
     /// </summary>
     [JsonPropertyName("plateformtypes")]
     public required String PlatformTypes { get; set; }
@@ -67,12 +67,12 @@ public class GameInfoField
     public Boolean IsMultiRegion { get; set; }
 
     /// <summary>
-    /// Indicates if the info supports multiple systems.
+    /// Indicates if the info supports multiple platform.
     /// Note: Can be missing or empty.
     /// </summary>
     [JsonPropertyName("multisupports")]
     [JsonConverter(typeof(JsonBooleanConverter))]
-    public Boolean IsMultiSupport { get; set; }
+    public Boolean SupportsMultiplePlatforms { get; set; }
 
     /// <summary>
     /// Indicates if the info supports multiple versions.

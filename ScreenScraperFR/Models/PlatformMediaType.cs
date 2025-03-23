@@ -2,13 +2,13 @@
 
 namespace ScreenScraperFR;
 
-internal class SystemMediaResponse
+internal class PlatformMediaResponse
 {
     [JsonPropertyName("medias")]
-    public Dictionary<Int32, SystemMediaType> Media { get; set; } = new();
+    public Dictionary<Int32, PlatformMediaType> Media { get; set; } = new();
 }
 
-public class SystemMediaType
+public class PlatformMediaType
 {
     /// <summary>
     /// Numeric ID of the media.
@@ -35,7 +35,7 @@ public class SystemMediaType
     public required String Category { get; set; }
 
     /// <summary>
-    /// Pipe-separated list of system type IDs where the media is used.
+    /// Pipe-separated list of platform type IDs where the media is used.
     /// </summary>
     [JsonPropertyName("plateformtypes")]
     public required String PlatformTypes { get; set; }
@@ -79,11 +79,11 @@ public class SystemMediaType
     public Boolean IsMultiRegion { get; set; }
 
     /// <summary>
-    /// Indicates if the media supports multiple systems.
+    /// Indicates if the media supports multiple platform.
     /// </summary>
     [JsonPropertyName("multisupports")]
     [JsonConverter(typeof(JsonBooleanConverter))]
-    public Boolean IsMultiSystem { get; set; }
+    public Boolean SupportsMultiplePlatforms { get; set; }
 
     /// <summary>
     /// Indicates if the media supports multiple versions.

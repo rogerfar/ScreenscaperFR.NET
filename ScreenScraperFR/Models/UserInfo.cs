@@ -36,10 +36,10 @@ public class UserInfo
     public Int32 ContributionLevel { get; set; }
 
     /// <summary>
-    /// Number of valid system media contributions.
+    /// Number of valid platform media contributions.
     /// </summary>
     [JsonPropertyName("uploadsysteme")]
-    public Int32 SystemMediaUploads { get; set; }
+    public Int32 PlatformMediaUploads { get; set; }
 
     /// <summary>
     /// Number of valid text info contributions.

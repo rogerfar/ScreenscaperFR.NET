@@ -35,7 +35,7 @@ public class RomInfoField
     public required String Category { get; set; }
 
     /// <summary>
-    /// Pipe-separated list of system type IDs where the info is available.
+    /// Pipe-separated list of platform type IDs where the info is available.
     /// </summary>
     [JsonPropertyName("plateformtypes")]
     public required String PlatformTypes { get; set; }
@@ -67,11 +67,11 @@ public class RomInfoField
     public Boolean IsMultiRegion { get; set; }
 
     /// <summary>
-    /// Indicates if the info supports multiple systems. May be empty or missing.
+    /// Indicates if the info supports multiple platform. May be empty or missing.
     /// </summary>
     [JsonPropertyName("multisupports")]
     [JsonConverter(typeof(JsonBooleanConverter))]
-    public Boolean IsMultiSystem { get; set; }
+    public Boolean SupportsMultiplePlatforms { get; set; }
 
     /// <summary>
     /// Indicates if the info supports multiple versions. May be empty or missing.

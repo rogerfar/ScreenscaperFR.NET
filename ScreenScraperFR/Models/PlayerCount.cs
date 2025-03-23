@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 
-namespace ScreenScraperFR.Models;
+namespace ScreenScraperFR;
 
 internal class PlayerCountsResponse
 {

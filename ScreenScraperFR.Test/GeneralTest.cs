@@ -109,13 +109,13 @@ public class GeneralTest
     }
     
     [Fact]
-    public async Task GetSystemMedia()
+    public async Task GetPlatformMediaTypes()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var systemMedia = await client.GetSystemMediaTypes();
+        var platformMediaTypes = await client.GetPlatformMediaTypes();
 
-        Assert.NotEmpty(systemMedia);
+        Assert.NotEmpty(platformMediaTypes);
     }
     
     [Fact]
@@ -173,37 +173,37 @@ public class GeneralTest
     }
     
     [Fact]
-    public async Task GetSystems()
+    public async Task GetPlatforms()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var systems = await client.GetSystems();
+        var platforms = await client.GetPlatforms();
 
-        Assert.NotEmpty(systems);
+        Assert.NotEmpty(platforms);
     }
     
     [Fact]
-    public async Task GetSystemImage()
+    public async Task GetPlatformImage()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var systemMedia = await client.GetSystemImage(1, "wheel(wor)");
+        var platformImage = await client.GetPlatformImage(1, "wheel(wor)");
 
-        await File.WriteAllBytesAsync("GetSystemImage.png", systemMedia.Data!);
+        await File.WriteAllBytesAsync("GetPlatformImage.png", platformImage.Data!);
 
-        Assert.NotNull(systemMedia);
+        Assert.NotNull(platformImage);
     }
 
     [Fact]
-    public async Task GetSystemVideo()
+    public async Task GetPlatformVideo()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var systemMedia = await client.GetSystemVideo(1, "video");
+        var platformVideo = await client.GetPlatformVideo(1, "video");
 
-        await File.WriteAllBytesAsync("GetSystemImage.mp4", systemMedia.Data!);
+        await File.WriteAllBytesAsync("GetPlatformVideo.mp4", platformVideo.Data!);
 
-        Assert.NotNull(systemMedia);
+        Assert.NotNull(platformVideo);
     }
     
     [Fact]
@@ -279,7 +279,7 @@ public class GeneralTest
         var input = await File.ReadAllBytesAsync(fileName);
 
         var byteHash = MD5.HashData(input);
-        var hash = BitConverter.ToString(byteHash).Replace("-", "");
+        var hash = Convert.ToHexString(byteHash);
 
         return hash.ToLower();
     }

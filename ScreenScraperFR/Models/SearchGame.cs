@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ScreenScraperFR.Models;
+namespace ScreenScraperFR;
 
 /// <summary>
 /// Response containing a list of games returned by a search.

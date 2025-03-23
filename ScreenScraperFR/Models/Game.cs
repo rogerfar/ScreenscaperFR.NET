@@ -3,7 +3,7 @@
 namespace ScreenScraperFR;
 
 /// <summary>
-/// Represents a full ScreenScraper game entry, including metadata, system, genres, media, and more.
+/// Represents a full ScreenScraper game entry, including metadata, platform, genres, media, and more.
 /// </summary>
 public class Game
 {
@@ -20,10 +20,10 @@ public class Game
     public List<GameLocalizedName> Names { get; set; } = [];
 
     /// <summary>
-    /// Platform or system the game belongs to.
+    /// Platform the game belongs to.
     /// </summary>
     [JsonPropertyName("systeme")]
-    public required GameSystem System { get; set; }
+    public required GamePlatform Platform { get; set; }
 
     /// <summary>
     /// Publisher of the game.
@@ -203,24 +203,24 @@ public class GameLocalizedName
 }
 
 /// <summary>
-/// Represents the system/platform to which the game belongs (e.g., SNES, PS1).
+/// Represents the platform to which the game belongs (e.g., SNES, PS1).
 /// </summary>
-public class GameSystem
+public class GamePlatform
 {
     /// <summary>
-    /// Numeric ID of the game system.
+    /// Numeric ID of the game platform.
     /// </summary>
     [JsonPropertyName("id")]
     public Int32 Id { get; set; }
 
     /// <summary>
-    /// Name of the game system.
+    /// Name of the game platform.
     /// </summary>
     [JsonPropertyName("text")]
     public required String Name { get; set; }
 
     /// <summary>
-    /// Numeric ID of the parent system, if this is a sub-system.
+    /// Numeric ID of the parent platform, if this is a sub-platform.
     /// </summary>
     [JsonPropertyName("parentid")]
     public Int32? ParentId { get; set; }
@@ -603,19 +603,19 @@ public class GameRom
     /// CRC32 checksum of the ROM file.
     /// </summary>
     [JsonPropertyName("romcrc")]
-    public required String RomCrc { get; set; }
+    public required String Crc { get; set; }
 
     /// <summary>
     /// Filename or folder name of the ROM.
     /// </summary>
     [JsonPropertyName("romfilename")]
-    public required String RomFilename { get; set; }
+    public required String Filename { get; set; }
 
     /// <summary>
     /// MD5 hash of the ROM file.
     /// </summary>
     [JsonPropertyName("rommd5")]
-    public required String RomMd5 { get; set; }
+    public required String Md5 { get; set; }
 
     /// <summary>
     /// Index number of the support medium (e.g., CD 1).
@@ -633,19 +633,19 @@ public class GameRom
     /// SHA1 checksum of the ROM file.
     /// </summary>
     [JsonPropertyName("romsha1")]
-    public required String RomSha1 { get; set; }
+    public required String Sha1 { get; set; }
 
     /// <summary>
     /// Size of the ROM file or folder in bytes.
     /// </summary>
     [JsonPropertyName("romsize")]
-    public Int32 RomSize { get; set; }
+    public Int32 Size { get; set; }
 
     /// <summary>
     /// Type of physical or digital support (e.g., cartridge, iso).
     /// </summary>
     [JsonPropertyName("romsupporttype")]
-    public String? RomMediaType { get; set; }
+    public String? MediaType { get; set; }
 
     /// <summary>
     /// Total number of support files (e.g., 2 discs).
@@ -657,7 +657,7 @@ public class GameRom
     /// Type of the ROM (e.g., "rom", "folder", "iso").
     /// </summary>
     [JsonPropertyName("romtype")]
-    public String? RomType { get; set; }
+    public String? Type { get; set; }
 
     /// <summary>
     /// Indicates if this ROM is a translated version.

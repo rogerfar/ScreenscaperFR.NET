@@ -1,6 +1,4 @@
-﻿using ScreenScraperFR.Models;
-
-namespace ScreenScraperFR;
+﻿namespace ScreenScraperFR;
 
 public interface IScreenScraperFRClient
 {
@@ -65,10 +63,10 @@ public interface IScreenScraperFRClient
     Task<List<Classification>> GetClassifications(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Retrieves the list of available media types for game systems.
+    /// Retrieves the list of available media types for game platform.
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<List<SystemMediaType>> GetSystemMediaTypes(CancellationToken cancellationToken = default);
+    Task<List<PlatformMediaType>> GetPlatformMediaTypes(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of available media types for games.
@@ -140,16 +138,16 @@ public interface IScreenScraperFRClient
                                         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Retrieves the list of systems and associated system/media information.
+    /// Retrieves the list of platforms and associated platform/media information.
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<List<System>> GetSystems(CancellationToken cancellationToken = default);
+    Task<List<Platform>> GetPlatforms(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Downloads image media (e.g., logos or artwork) for a system.
+    /// Downloads image media (e.g., logos or artwork) for a platform.
     /// Uses checksums to optionally skip downloading if the local version is current.
     /// </summary>
-    /// <param name="systemId">ID of the target system.</param>
+    /// <param name="platformId">ID of the target platform.</param>
     /// <param name="media">Media identifier (e.g., wheel, logo, etc.).</param>
     /// <param name="mediaFormat">Optional: File extension format.</param>
     /// <param name="crc">Optional: CRC32 of the local file.</param>
@@ -159,55 +157,55 @@ public interface IScreenScraperFRClient
     /// <param name="maxHeight">Optional: Maximum image height.</param>
     /// <param name="outputFormat">Optional: Desired output image format.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<MediaResponse> GetSystemImage(Int32 systemId,
-                                       String media,
-                                       String? mediaFormat = null,
-                                       String? crc = null,
-                                       String? md5 = null,
-                                       String? sha1 = null,
-                                       Int32? maxWidth = null,
-                                       Int32? maxHeight = null,
-                                       String? outputFormat = null,
-                                       CancellationToken cancellationToken = default);
+    Task<MediaResponse> GetPlatformImage(Int32 platformId,
+                                         String media,
+                                         String? mediaFormat = null,
+                                         String? crc = null,
+                                         String? md5 = null,
+                                         String? sha1 = null,
+                                         Int32? maxWidth = null,
+                                         Int32? maxHeight = null,
+                                         String? outputFormat = null,
+                                         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Downloads video media (e.g., intro video) for a system.
+    /// Downloads video media (e.g., intro video) for a platform.
     /// Uses checksum comparison to return status-only when possible.
     /// </summary>
-    /// <param name="systemId">System ID.</param>
+    /// <param name="platformId">Platform ID.</param>
     /// <param name="media">Media type to download.</param>
     /// <param name="mediaFormat">Optional file format (mp4, etc.).</param>
     /// <param name="crc">Optional CRC checksum of the local video.</param>
     /// <param name="md5">Optional MD5 checksum.</param>
     /// <param name="sha1">Optional SHA1 checksum.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<MediaResponse> GetSystemVideo(Int32 systemId,
-                                       String media,
-                                       String? mediaFormat = null,
-                                       String? crc = null,
-                                       String? md5 = null,
-                                       String? sha1 = null,
-                                       CancellationToken cancellationToken = default);
+    Task<MediaResponse> GetPlatformVideo(Int32 platformId,
+                                         String media,
+                                         String? mediaFormat = null,
+                                         String? crc = null,
+                                         String? md5 = null,
+                                         String? sha1 = null,
+                                         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Searches for a game by name. Returns a list of up to 30 games ranked by match probability.
     /// </summary>
-    Task<List<Game>> SearchGames(String name, Int32? systemId = null, CancellationToken cancellationToken = default);
+    Task<List<Game>> SearchGames(String name, Int32? platformId = null, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Searches for a game based on a ROM file's checksum(s), system ID, and additional metadata.
+    /// Searches for a game based on a ROM file's checksum(s), platform ID, and additional metadata.
     /// </summary>
     /// <param name="crc">CRC32 checksum of the ROM/ISO/folder.</param>
     /// <param name="md5">MD5 checksum of the ROM/ISO/folder.</param>
     /// <param name="sha1">SHA1 checksum of the ROM/ISO/folder.</param>
-    /// <param name="systemId">Numeric system ID.</param>
+    /// <param name="platformId">Numeric platform ID.</param>
     /// <param name="romType">Type of ROM: file / iso / folder.</param>
     /// <param name="romName">Name of the file (with extension) or folder.</param>
     /// <param name="romSize">Size in bytes of the file or folder.</param>
     /// <param name="serialNumber">Force game search with this serial number (ISO only).</param>
     /// <param name="gameId">Force game search with a known game ID (bypasses rom data).</param>
     /// <param name="cancellationToken"></param>
-    Task<Game?> GetGame(Int32 systemId,
+    Task<Game?> GetGame(Int32 platformId,
                         String romType,
                         String? romName = null,
                         Int32? romSize = null,
@@ -222,7 +220,7 @@ public interface IScreenScraperFRClient
     /// Downloads image media for a specific game.
     /// May return a status string (e.g., MD5OK) instead of media if local hash matches server.
     /// </summary>
-    Task<MediaResponse> GetGameImage(Int32 systemId,
+    Task<MediaResponse> GetGameImage(Int32 platformId,
                                      Int32 gameId,
                                      String media,
                                      String? mediaFormat = null,
@@ -238,7 +236,7 @@ public interface IScreenScraperFRClient
     /// Downloads video content for a game (e.g., gameplay trailer).
     /// Returns a hash match status if the file is already up to date locally.
     /// </summary>
-    Task<MediaResponse> GetGameVideo(Int32 systemId,
+    Task<MediaResponse> GetGameVideo(Int32 platformId,
                                      Int32 gameId,
                                      String media,
                                      String? mediaFormat = null,
@@ -251,7 +249,7 @@ public interface IScreenScraperFRClient
     /// Downloads the PDF manual for a specific game.
     /// Includes optional hash checks for optimized sync.
     /// </summary>
-    Task<MediaResponse> GetGameManual(Int32 systemId,
+    Task<MediaResponse> GetGameManual(Int32 platformId,
                                       Int32 gameId,
                                       String media,
                                       String? mediaFormat = null,
@@ -360,18 +358,18 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return [.. response.Classifications.Values];
     }
 
-    public async Task<List<SystemMediaType>> GetSystemMediaTypes(CancellationToken cancellationToken = default)
+    public async Task<List<PlatformMediaType>> GetPlatformMediaTypes(CancellationToken cancellationToken = default)
     {
-        var response = await _requests.GetRequestAsync<SystemMediaResponse>("mediasSystemeListe.php", false, null, cancellationToken);
+        var response = await _requests.GetRequestAsync<PlatformMediaResponse>("mediasSystemeListe.php", false, null, cancellationToken);
 
         return [.. response.Media.Values];
     }
     
-    public async Task<List<System>> GetSystems(CancellationToken cancellationToken = default)
+    public async Task<List<Platform>> GetPlatforms(CancellationToken cancellationToken = default)
     {
-        var response = await _requests.GetRequestAsync<SystemsResponse>("systemesListe.php", false, null, cancellationToken);
+        var response = await _requests.GetRequestAsync<PlatformsResponse>("systemesListe.php", false, null, cancellationToken);
 
-        return response.Systems;
+        return response.Platforms;
     }
 
     public async Task<List<GameMediaType>> GetGameMediaTypes(CancellationToken cancellationToken = default)
@@ -456,7 +454,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response;
     }
 
-    public async Task<MediaResponse> GetGameImage(Int32 systemId,
+    public async Task<MediaResponse> GetGameImage(Int32 platformId,
                                                   Int32 gameId,
                                                   String media,
                                                   String? mediaFormat = null,
@@ -471,7 +469,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         var parameters = new Dictionary<String, String>
         {
             {
-                "systemeid", systemId.ToString()
+                "systemeid", platformId.ToString()
             },
             {
                 "jeuid", gameId.ToString()
@@ -582,21 +580,21 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response;
     }
 
-    public async Task<MediaResponse> GetSystemImage(Int32 systemId,
-                                                    String media,
-                                                    String? mediaFormat = null,
-                                                    String? crc = null,
-                                                    String? md5 = null,
-                                                    String? sha1 = null,
-                                                    Int32? maxWidth = null,
-                                                    Int32? maxHeight = null,
-                                                    String? outputFormat = null,
-                                                    CancellationToken cancellationToken = default)
+    public async Task<MediaResponse> GetPlatformImage(Int32 platformId,
+                                                      String media,
+                                                      String? mediaFormat = null,
+                                                      String? crc = null,
+                                                      String? md5 = null,
+                                                      String? sha1 = null,
+                                                      Int32? maxWidth = null,
+                                                      Int32? maxHeight = null,
+                                                      String? outputFormat = null,
+                                                      CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
         {
             {
-                "systemeid", systemId.ToString()
+                "systemeid", platformId.ToString()
             },
             {
                 "media", media
@@ -643,18 +641,18 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response;
     }
 
-    public async Task<MediaResponse> GetSystemVideo(Int32 systemId,
-                                                    String media,
-                                                    String? mediaFormat = null,
-                                                    String? crc = null,
-                                                    String? md5 = null,
-                                                    String? sha1 = null,
-                                                    CancellationToken cancellationToken = default)
+    public async Task<MediaResponse> GetPlatformVideo(Int32 platformId,
+                                                      String media,
+                                                      String? mediaFormat = null,
+                                                      String? crc = null,
+                                                      String? md5 = null,
+                                                      String? sha1 = null,
+                                                      CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
         {
             {
-                "systemeid", systemId.ToString()
+                "systemeid", platformId.ToString()
             },
             {
                 "media", media
@@ -686,7 +684,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response;
     }
 
-    public async Task<MediaResponse> GetGameVideo(Int32 systemId,
+    public async Task<MediaResponse> GetGameVideo(Int32 platformId,
                                                   Int32 gameId,
                                                   String media,
                                                   String? mediaFormat = null,
@@ -698,7 +696,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         var parameters = new Dictionary<String, String>
         {
             {
-                "systemeid", systemId.ToString()
+                "systemeid", platformId.ToString()
             },
             {
                 "jeuid", gameId.ToString()
@@ -733,7 +731,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response;
     }
 
-    public async Task<MediaResponse> GetGameManual(Int32 systemId,
+    public async Task<MediaResponse> GetGameManual(Int32 platformId,
                                                    Int32 gameId,
                                                    String media,
                                                    String? mediaFormat = null,
@@ -745,7 +743,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         var parameters = new Dictionary<String, String>
         {
             {
-                "systemeid", systemId.ToString()
+                "systemeid", platformId.ToString()
             },
             {
                 "jeuid", gameId.ToString()
@@ -780,7 +778,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response;
     }
 
-    public async Task<List<Game>> SearchGames(String name, Int32? systemId = null, CancellationToken cancellationToken = default)
+    public async Task<List<Game>> SearchGames(String name, Int32? platformId = null, CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
         {
@@ -789,9 +787,9 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
             }
         };
 
-        if (systemId != null)
+        if (platformId != null)
         {
-            parameters.Add("systemId", systemId.Value.ToString());
+            parameters.Add("systemId", platformId.Value.ToString());
         }
 
         var response = await _requests.GetRequestAsync<SearchGamesResponse>("jeuRecherche.php", true, parameters, cancellationToken);
@@ -799,7 +797,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return [.. response.Games];
     }
 
-    public async Task<Game?> GetGame(Int32 systemId,
+    public async Task<Game?> GetGame(Int32 platformId,
                                      String romType,
                                      String? romName = null,
                                      Int32? romSize = null,
@@ -813,7 +811,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         var parameters = new Dictionary<String, String>
         {
             {
-                "systemeid", systemId.ToString()
+                "systemeid", platformId.ToString()
             },
             {
                 "romtype", romType

@@ -2,19 +2,19 @@
 
 namespace ScreenScraperFR;
 
-internal class SystemsResponse
+internal class PlatformsResponse
 {
     [JsonPropertyName("systemes")]
-    public List<System> Systems { get; set; } = [];
+    public List<Platform> Platforms { get; set; } = [];
 }
 
-public class System
+public class Platform
 {
     [JsonPropertyName("id")]
     public Int32 Id { get; set; }
 
     [JsonPropertyName("noms")]
-    public required SystemNames Names { get; set; }
+    public required PlatformNames Names { get; set; }
 
     /// <summary>
     /// Supported ROM file extensions (across all emulators).
@@ -24,14 +24,13 @@ public class System
     public String? Extensions { get; set; }
 
     /// <summary>
-    /// Name of the company that produced the system.
+    /// Name of the company that produced the platform.
     /// </summary>
-
     [JsonPropertyName("compagnie")]
     public String? Company { get; set; }
 
     /// <summary>
-    /// Type of system (e.g., Arcade, Console, Handheld, etc.).
+    /// Type of platform (e.g., Arcade, Console, Handheld, etc.).
     /// </summary>
     [JsonPropertyName("type")]
     public String? Type { get; set; }
@@ -51,80 +50,80 @@ public class System
     public String? EndYear { get; set; }
 
     /// <summary>
-    /// Type(s) of ROMs used by the system.
+    /// Type(s) of ROMs used by the platform.
     /// </summary>
     [JsonPropertyName("romtype")]
     public required String RomType { get; set; }
 
     /// <summary>
-    /// Type(s) of physical media used by the system (e.g., cartridge, CD).
+    /// Type(s) of physical media used by the platform (e.g., cartridge, CD).
     /// </summary>
     [JsonPropertyName("supporttype")]
     public required String MediaType { get; set; }
 
     /// <summary>
-    /// Media assets related to the system (images, videos, bezels, etc.).
+    /// Media assets related to the platform (images, videos, bezels, etc.).
     /// </summary>
     [JsonPropertyName("medias")]
     public List<Dictionary<String, String>> Media { get; set; } = [];
 
     /// <summary>
-    /// ID of the parent system, if applicable.
+    /// ID of the parent platform, if applicable.
     /// </summary>
     [JsonPropertyName("parentid")]
     public Int32? ParentId { get; set; }
 }
 
 /// <summary>
-/// Localized and frontend-specific names for a system.
+/// Localized and frontend-specific names for a platform.
 /// </summary>
-public class SystemNames
+public class PlatformNames
 {
     /// <summary>
-    /// European name of the system.
+    /// Common names used for the platform.
+    /// </summary>
+    [JsonPropertyName("noms_commun")]
+    public String? Names { get; set; }
+
+    /// <summary>
+    /// European name of the platform.
     /// </summary>
     [JsonPropertyName("nom_eu")]
-    public required String NameEu { get; set; }
-
-    /// <summary>
-    /// US name of the system.
-    /// </summary>
-    [JsonPropertyName("nom_us")]
-    public String? NameUs { get; set; }
-
-    /// <summary>
-    /// Name used in Recalbox frontend.
-    /// </summary>
-    [JsonPropertyName("nom_recalbox")]
-    public String? NameRecalbox { get; set; }
-
-    /// <summary>
-    /// Name used in RetroPie frontend.
-    /// </summary>
-    [JsonPropertyName("nom_retropie")]
-    public String? NameRetropie { get; set; }
-
-    /// <summary>
-    /// Name used in LaunchBox frontend.
-    /// </summary>
-    [JsonPropertyName("nom_launchbox")]
-    public String? NameLaunchbox { get; set; }
+    public required String Eu { get; set; }
 
     /// <summary>
     /// Name used in HyperSpin frontend.
     /// </summary>
     [JsonPropertyName("nom_hyperspin")]
-    public String? NameHyperspin { get; set; }
+    public String? Hyperspin { get; set; }
 
     /// <summary>
-    /// Common names used for the system.
-    /// </summary>
-    [JsonPropertyName("noms_commun")]
-    public String? CommonNames { get; set; }
-
-    /// <summary>
-    /// Japanese name of the system.
+    /// Japanese name of the platform.
     /// </summary>
     [JsonPropertyName("nom_jp")]
-    public String? NameJp { get; set; }
+    public String? Jp { get; set; }
+
+    /// <summary>
+    /// Name used in LaunchBox frontend.
+    /// </summary>
+    [JsonPropertyName("nom_launchbox")]
+    public String? Launchbox { get; set; }
+
+    /// <summary>
+    /// Name used in Recalbox frontend.
+    /// </summary>
+    [JsonPropertyName("nom_recalbox")]
+    public String? Recalbox { get; set; }
+
+    /// <summary>
+    /// Name used in RetroPie frontend.
+    /// </summary>
+    [JsonPropertyName("nom_retropie")]
+    public String? Retropie { get; set; }
+
+    /// <summary>
+    /// US name of the platform.
+    /// </summary>
+    [JsonPropertyName("nom_us")]
+    public String? Us { get; set; }
 }
