@@ -789,7 +789,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
 
         if (platformId != null)
         {
-            parameters.Add("systemId", platformId.Value.ToString());
+            parameters.Add("systemeid", platformId.Value.ToString());
         }
 
         var response = await _requests.GetRequestAsync<SearchGamesResponse>("jeuRecherche.php", true, parameters, cancellationToken);
