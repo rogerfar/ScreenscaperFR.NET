@@ -71,7 +71,7 @@ public class RomInfoField
     /// </summary>
     [JsonPropertyName("multisupports")]
     [JsonConverter(typeof(JsonBooleanConverter))]
-    public Boolean IsMultiSupport { get; set; }
+    public Boolean IsMultiSystem { get; set; }
 
     /// <summary>
     /// Indicates if the info supports multiple versions. May be empty or missing.

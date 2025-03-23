@@ -5,10 +5,10 @@ namespace ScreenScraperFR;
 internal class GameMediaResponse
 {
     [JsonPropertyName("medias")]
-    public Dictionary<Int32, GameMedia> Media { get; set; } = new();
+    public Dictionary<Int32, GameMediaType> Media { get; set; } = [];
 }
 
-public class GameMedia
+public class GameMediaType
 {
     /// <summary>
     /// Numeric ID of the media.
@@ -83,7 +83,7 @@ public class GameMedia
     /// </summary>
     [JsonPropertyName("multisupports")]
     [JsonConverter(typeof(JsonBooleanConverter))]
-    public Boolean IsMultiSupport { get; set; }
+    public Boolean IsMultiSystem { get; set; }
 
     /// <summary>
     /// Indicates if the media supports multiple versions.

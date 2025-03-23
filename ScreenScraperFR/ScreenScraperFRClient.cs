@@ -32,7 +32,7 @@ public interface IScreenScraperFRClient
     /// Retrieves the list of supported media types (e.g., box, screenshot, title screen).
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<List<String>> GetSupportTypes(CancellationToken cancellationToken = default);
+    Task<List<String>> GetMediaTypes(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of ROM types recognized by ScreenScraper.
@@ -68,13 +68,13 @@ public interface IScreenScraperFRClient
     /// Retrieves the list of available media types for game systems.
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<List<SystemMedia>> GetSystemMedia(CancellationToken cancellationToken = default);
+    Task<List<SystemMediaType>> GetSystemMediaTypes(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of available media types for games.
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<List<GameMedia>> GetGameMedia(CancellationToken cancellationToken = default);
+    Task<List<GameMediaType>> GetGameMediaTypes(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of available text information fields for games (e.g., summary, developer).
@@ -192,7 +192,7 @@ public interface IScreenScraperFRClient
     /// <summary>
     /// Searches for a game by name. Returns a list of up to 30 games ranked by match probability.
     /// </summary>
-    Task<List<SearchGame>> SearchGames(String name, Int32? systemId = null, CancellationToken cancellationToken = default);
+    Task<List<Game>> SearchGames(String name, Int32? systemId = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Searches for a game based on a ROM file's checksum(s), system ID, and additional metadata.
@@ -207,16 +207,16 @@ public interface IScreenScraperFRClient
     /// <param name="serialNumber">Force game search with this serial number (ISO only).</param>
     /// <param name="gameId">Force game search with a known game ID (bypasses rom data).</param>
     /// <param name="cancellationToken"></param>
-    Task<GetGame?> GetGame(Int32 systemId,
-                           String romType,
-                           String? romName = null,
-                           Int32? romSize = null,
-                           String? serialNumber = null,
-                           Int32? gameId = null,
-                           String? crc = null,
-                           String? md5 = null,
-                           String? sha1 = null,
-                           CancellationToken cancellationToken = default);
+    Task<Game?> GetGame(Int32 systemId,
+                        String romType,
+                        String? romName = null,
+                        Int32? romSize = null,
+                        String? serialNumber = null,
+                        Int32? gameId = null,
+                        String? crc = null,
+                        String? md5 = null,
+                        String? sha1 = null,
+                        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Downloads image media for a specific game.
@@ -308,21 +308,21 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
     {
         var response = await _requests.GetRequestAsync<UserLevelsResponse>("userlevelsListe.php", false, null, cancellationToken);
 
-        return response.UserLevels.Values.ToList();
+        return [.. response.UserLevels.Values];
     }
 
     public async Task<List<PlayerCount>> GetPlayerCounts(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<PlayerCountsResponse>("nbJoueursListe.php", false, null, cancellationToken);
 
-        return response.PlayerCounts.Values.ToList();
+        return [.. response.PlayerCounts.Values];
     }
 
-    public async Task<List<String>> GetSupportTypes(CancellationToken cancellationToken = default)
+    public async Task<List<String>> GetMediaTypes(CancellationToken cancellationToken = default)
     {
-        var response = await _requests.GetRequestAsync<SupportTypesResponse>("supportTypesListe.php", false, null, cancellationToken);
+        var response = await _requests.GetRequestAsync<MediaTypesResponse>("supportTypesListe.php", false, null, cancellationToken);
 
-        return response.SupportTypes;
+        return response.MediaTypes;
     }
 
     public async Task<List<String>> GetRomTypes(CancellationToken cancellationToken = default)
@@ -336,35 +336,35 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
     {
         var response = await _requests.GetRequestAsync<GenresResponse>("genresListe.php", false, null, cancellationToken);
 
-        return response.Genres.Values.ToList();
+        return [.. response.Genres.Values];
     }
 
     public async Task<List<Region>> GetRegions(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<RegionsResponse>("regionsListe.php", false, null, cancellationToken);
 
-        return response.Regions.Values.ToList();
+        return [.. response.Regions.Values];
     }
 
     public async Task<List<Language>> GetLanguages(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<LanguagesResponse>("languesListe.php", false, null, cancellationToken);
 
-        return response.Languages.Values.ToList();
+        return [.. response.Languages.Values];
     }
 
     public async Task<List<Classification>> GetClassifications(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<ClassificationsResponse>("classificationListe.php", false, null, cancellationToken);
 
-        return response.Classifications.Values.ToList();
+        return [.. response.Classifications.Values];
     }
 
-    public async Task<List<SystemMedia>> GetSystemMedia(CancellationToken cancellationToken = default)
+    public async Task<List<SystemMediaType>> GetSystemMediaTypes(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<SystemMediaResponse>("mediasSystemeListe.php", false, null, cancellationToken);
 
-        return response.Media.Values.ToList();
+        return [.. response.Media.Values];
     }
     
     public async Task<List<System>> GetSystems(CancellationToken cancellationToken = default)
@@ -374,25 +374,25 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response.Systems;
     }
 
-    public async Task<List<GameMedia>> GetGameMedia(CancellationToken cancellationToken = default)
+    public async Task<List<GameMediaType>> GetGameMediaTypes(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<GameMediaResponse>("mediasJeuListe.php", false, null, cancellationToken);
 
-        return response.Media.Values.ToList();
+        return [.. response.Media.Values];
     }
 
     public async Task<List<GameInfoField>> GetGameInfoFields(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<GameInfoFieldsResponse>("infosJeuListe.php", false, null, cancellationToken);
 
-        return response.Infos.Values.ToList();
+        return [.. response.Infos.Values];
     }
 
     public async Task<List<RomInfoField>> GetRomInfoFields(CancellationToken cancellationToken = default)
     {
         var response = await _requests.GetRequestAsync<RomInfoFieldsResponse>("infosRomListe.php", false, null, cancellationToken);
 
-        return response.Infos.Values.ToList();
+        return [.. response.Infos.Values];
     }
 
     public async Task<MediaResponse> GetCompanyImage(Int32 companyId,
@@ -780,7 +780,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         return response;
     }
 
-    public async Task<List<SearchGame>> SearchGames(String name, Int32? systemId = null, CancellationToken cancellationToken = default)
+    public async Task<List<Game>> SearchGames(String name, Int32? systemId = null, CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
         {
@@ -796,19 +796,19 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
 
         var response = await _requests.GetRequestAsync<SearchGamesResponse>("jeuRecherche.php", true, parameters, cancellationToken);
 
-        return response.Games.ToList();
+        return [.. response.Games];
     }
 
-    public async Task<GetGame?> GetGame(Int32 systemId,
-                                        String romType,
-                                        String? romName = null,
-                                        Int32? romSize = null,
-                                        String? serialNumber = null,
-                                        Int32? gameId = null,
-                                        String? crc = null,
-                                        String? md5 = null,
-                                        String? sha1 = null,
-                                        CancellationToken cancellationToken = default)
+    public async Task<Game?> GetGame(Int32 systemId,
+                                     String romType,
+                                     String? romName = null,
+                                     Int32? romSize = null,
+                                     String? serialNumber = null,
+                                     Int32? gameId = null,
+                                     String? crc = null,
+                                     String? md5 = null,
+                                     String? sha1 = null,
+                                     CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
         {

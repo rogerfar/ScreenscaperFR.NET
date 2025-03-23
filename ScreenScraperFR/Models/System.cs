@@ -60,7 +60,7 @@ public class System
     /// Type(s) of physical media used by the system (e.g., cartridge, CD).
     /// </summary>
     [JsonPropertyName("supporttype")]
-    public required String SupportType { get; set; }
+    public required String MediaType { get; set; }
 
     /// <summary>
     /// Media assets related to the system (images, videos, bezels, etc.).

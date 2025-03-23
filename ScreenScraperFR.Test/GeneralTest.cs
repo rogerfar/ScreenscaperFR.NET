@@ -49,13 +49,13 @@ public class GeneralTest
     }
 
     [Fact]
-    public async Task GetSupportTypes()
+    public async Task GetMediaTypes()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var supportTypes = await client.GetSupportTypes();
+        var mediaTypes = await client.GetMediaTypes();
 
-        Assert.NotEmpty(supportTypes);
+        Assert.NotEmpty(mediaTypes);
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var systemMedia = await client.GetSystemMedia();
+        var systemMedia = await client.GetSystemMediaTypes();
 
         Assert.NotEmpty(systemMedia);
     }
@@ -123,7 +123,7 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var gameMedia = await client.GetGameMedia();
+        var gameMedia = await client.GetGameMediaTypes();
 
         Assert.NotEmpty(gameMedia);
     }
@@ -277,9 +277,8 @@ public class GeneralTest
     private static async Task<String> CreateMd5(String fileName)
     {
         var input = await File.ReadAllBytesAsync(fileName);
-        using var md5 = MD5.Create();
 
-        var byteHash = md5.ComputeHash(input);
+        var byteHash = MD5.HashData(input);
         var hash = BitConverter.ToString(byteHash).Replace("-", "");
 
         return hash.ToLower();

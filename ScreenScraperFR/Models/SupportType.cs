@@ -2,8 +2,8 @@
 
 namespace ScreenScraperFR;
 
-internal class SupportTypesResponse
+internal class MediaTypesResponse
 {
     [JsonPropertyName("supporttypes")]
-    public List<String> SupportTypes { get; set; } = [];
+    public List<String> MediaTypes { get; set; } = [];
 }
