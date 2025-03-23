@@ -362,9 +362,9 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
 
     public async Task<List<SystemMedia>> GetSystemMedia(CancellationToken cancellationToken = default)
     {
-        var response = await _requests.GetRequestAsync<SystemMediasResponse>("mediasSystemeListe.php", false, null, cancellationToken);
+        var response = await _requests.GetRequestAsync<SystemMediaResponse>("mediasSystemeListe.php", false, null, cancellationToken);
 
-        return response.Medias.Values.ToList();
+        return response.Media.Values.ToList();
     }
     
     public async Task<List<System>> GetSystems(CancellationToken cancellationToken = default)
@@ -376,9 +376,9 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
 
     public async Task<List<GameMedia>> GetGameMedia(CancellationToken cancellationToken = default)
     {
-        var response = await _requests.GetRequestAsync<GameMediasResponse>("mediasJeuListe.php", false, null, cancellationToken);
+        var response = await _requests.GetRequestAsync<GameMediaResponse>("mediasJeuListe.php", false, null, cancellationToken);
 
-        return response.Medias.Values.ToList();
+        return response.Media.Values.ToList();
     }
 
     public async Task<List<GameInfoField>> GetGameInfoFields(CancellationToken cancellationToken = default)

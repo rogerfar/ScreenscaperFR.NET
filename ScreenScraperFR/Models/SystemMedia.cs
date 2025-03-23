@@ -2,10 +2,10 @@
 
 namespace ScreenScraperFR;
 
-internal class SystemMediasResponse
+internal class SystemMediaResponse
 {
     [JsonPropertyName("medias")]
-    public Dictionary<Int32, SystemMedia> Medias { get; set; } = new();
+    public Dictionary<Int32, SystemMedia> Media { get; set; } = new();
 }
 
 public class SystemMedia

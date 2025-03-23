@@ -113,9 +113,9 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var systemMedias = await client.GetSystemMedia();
+        var systemMedia = await client.GetSystemMedia();
 
-        Assert.NotEmpty(systemMedias);
+        Assert.NotEmpty(systemMedia);
     }
     
     [Fact]
@@ -123,9 +123,9 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var gameMedias = await client.GetGameMedia();
+        var gameMedia = await client.GetGameMedia();
 
-        Assert.NotEmpty(gameMedias);
+        Assert.NotEmpty(gameMedia);
     }
     
     [Fact]

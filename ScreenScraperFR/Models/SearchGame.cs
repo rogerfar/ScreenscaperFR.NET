@@ -23,37 +23,37 @@ public class SearchGame
     /// List of names for the game, including regional variants.
     /// </summary>
     [JsonPropertyName("noms")]
-    public List<SearchGameReleaseDate> ReleaseDates { get; set; } = [];
+    public List<SearchGameName> Names { get; set; } = [];
 
     /// <summary>
     /// System on which the game runs.
     /// </summary>
     [JsonPropertyName("systeme")]
-    public SearchGameSystem System { get; set; } = new();
+    public required SearchGameSystem System { get; set; }
 
     /// <summary>
     /// Publisher of the game.
     /// </summary>
     [JsonPropertyName("editeur")]
-    public SearchGameText? Editeur { get; set; }
+    public required SearchGameText Publisher { get; set; }
 
     /// <summary>
     /// Developer of the game.
     /// </summary>
     [JsonPropertyName("developpeur")]
-    public SearchGameText? Developer { get; set; }
+    public required SearchGameText Developer { get; set; }
 
     /// <summary>
     /// Number of players.
     /// </summary>
     [JsonPropertyName("joueurs")]
-    public SearchGameTextNode? GameTextNode { get; set; }
+    public required SearchGameTextNode PlayerCounts { get; set; }
 
     /// <summary>
     /// Game rating out of 20.
     /// </summary>
     [JsonPropertyName("note")]
-    public SearchGameTextNode? Note { get; set; }
+    public required SearchGameTextNode Rating { get; set; }
 
     /// <summary>
     /// Whether the game is included in ScreenScraper's TOP Staff selection.
@@ -96,7 +96,7 @@ public class SearchGame
     /// Release dates by region.
     /// </summary>
     [JsonPropertyName("dates")]
-    public List<SearchGameReleaseDate> Dates { get; set; } = [];
+    public List<SearchGameReleaseDate> ReleaseDates { get; set; } = [];
 
     /// <summary>
     /// List of genres for the game.
@@ -111,16 +111,16 @@ public class SearchGame
     public List<SearchGameRelation> Modes { get; set; } = [];
 
     /// <summary>
-    /// Families or franchises the game belongs to (e.g., "Mario", "Zelda").
+    /// Series or franchises the game belongs to (e.g., "Mario", "Zelda").
     /// </summary>
     [JsonPropertyName("familles")]
-    public List<SearchGameRelation> Families { get; set; } = [];
+    public List<SearchGameRelation> Series { get; set; } = [];
 
     /// <summary>
     /// Media associated with the game (images, videos, manuals, etc.).
     /// </summary>
     [JsonPropertyName("medias")]
-    public List<SearchGame>? Medias { get; set; } = [];
+    public List<SearchGameMedia> Media { get; set; } = [];
 }
 
 /// <summary>
@@ -129,10 +129,22 @@ public class SearchGame
 public class SearchGameClassification
 {
     [JsonPropertyName("type")]
-    public String Type { get; set; } = "";
+    public required String Type { get; set; }
 
     [JsonPropertyName("text")]
-    public String Text { get; set; } = "";
+    public required String Text { get; set; }
+}
+
+/// <summary>
+/// Game name by region.
+/// </summary>
+public class SearchGameName
+{
+    [JsonPropertyName("region")]
+    public required String Region { get; set; }
+
+    [JsonPropertyName("text")]
+    public required String Text { get; set; }
 }
 
 /// <summary>
@@ -141,10 +153,10 @@ public class SearchGameClassification
 public class SearchGameReleaseDate
 {
     [JsonPropertyName("region")]
-    public String Region { get; set; } = "";
+    public required String Region { get; set; }
 
     [JsonPropertyName("text")]
-    public String Text { get; set; } = "";
+    public required String Text { get; set; }
 }
 
 /// <summary>
@@ -156,7 +168,7 @@ public class SearchGameText
     public Int32 Id { get; set; }
 
     [JsonPropertyName("text")]
-    public String Text { get; set; } = "";
+    public required String Text { get; set; }
 }
 
 /// <summary>
@@ -171,7 +183,7 @@ public class SearchGameRelation
     /// Short name (e.g., internal ID or abbreviation).
     /// </summary>
     [JsonPropertyName("nomcourt")]
-    public String ShortName { get; set; } = "";
+    public required String ShortName { get; set; }
 
     /// <summary>
     /// Indicates whether this is the primary item (1 = primary, 0 = not).
@@ -184,8 +196,7 @@ public class SearchGameRelation
     /// ID of the parent category.
     /// </summary>
     [JsonPropertyName("parentid")]
-
-    public Int32 Parentid { get; set; }
+    public Int32? Parentid { get; set; }
 
     /// <summary>
     /// Names of the item in multiple languages.
@@ -203,13 +214,13 @@ public class SearchGameLocalizedText
     /// Language code (e.g., "fr", "en").
     /// </summary>
     [JsonPropertyName("langue")]
-    public String Langue { get; set; } = "";
+    public required String Language { get; set; }
 
     /// <summary>
     /// Translated or localized text.
     /// </summary>
     [JsonPropertyName("text")]
-    public String Text { get; set; } = "";
+    public required String Text { get; set; }
 }
 
 /// <summary>
@@ -218,7 +229,7 @@ public class SearchGameLocalizedText
 public class SearchGameTextNode
 {
     [JsonPropertyName("text")]
-    public String Text { get; set; } = "";
+    public required String Text { get; set; }
 }
 
 /// <summary>
@@ -230,7 +241,7 @@ public class SearchGameSystem
     public Int32 Id { get; set; }
 
     [JsonPropertyName("text")]
-    public String Text { get; set; } = "";
+    public required String Text { get; set; }
 
     /// <summary>
     /// Parent system ID (if part of a hierarchy).
@@ -239,45 +250,104 @@ public class SearchGameSystem
     public Int32? Parentid { get; set; }
 }
 
-
+/// <summary>
+/// Represents a media file associated with a game (e.g., screenshot, video, box art).
+/// </summary>
 public class SearchGameMedia
 {
+    /// <summary>
+    /// Unique identifier of the media 
+    /// </summary>
+    [JsonPropertyName("id")]
+    public Int32 Id { get; set; }
+
+    /// <summary>
+    /// CRC32 hash of the media file.
+    /// </summary>
     [JsonPropertyName("crc")]
     public required String Crc { get; set; }
 
+    /// <summary>
+    /// Format of the media file (e.g., png, jpg, mp4).
+    /// </summary>
     [JsonPropertyName("format")]
     public required String Format { get; set; }
 
+    /// <summary>
+    /// MD5 hash of the media file.
+    /// </summary>
     [JsonPropertyName("md5")]
     public required String Md5 { get; set; }
 
+    /// <summary>
+    /// Parent type/category of the media.
+    /// </summary>
     [JsonPropertyName("parent")]
     public required String Parent { get; set; }
 
+    /// <summary>
+    /// Region this media is associated with (optional).
+    /// </summary>
     [JsonPropertyName("region")]
     public String? Region { get; set; }
 
+    /// <summary>
+    /// SHA1 hash of the media file.
+    /// </summary>
     [JsonPropertyName("sha1")]
     public required String Sha1 { get; set; }
 
+    /// <summary>
+    /// Size of the media file in bytes.
+    /// </summary>
     [JsonPropertyName("size")]
-    public Int64 Size { get; set; }
+    public Int32 Size { get; set; }
 
+    /// <summary>
+    /// Type of the media (e.g., "screenshot", "video", "boxart").
+    /// </summary>
     [JsonPropertyName("type")]
     public required String Type { get; set; }
 
+    /// <summary>
+    /// URL to download the media file.
+    /// </summary>
     [JsonPropertyName("url")]
     public required String Url { get; set; }
 
+    /// <summary>
+    /// Support type identifier (e.g. physical medium indicator).
+    /// </summary>
     [JsonPropertyName("support")]
-    public Int64? Support { get; set; }
+    public Int32? Support { get; set; }
 
+    /// <summary>
+    /// Vertical position for displaying the media (optional).
+    /// </summary>
+    [JsonPropertyName("posh")]
+    public Int32? PosH { get; set; }
+
+    /// <summary>
+    /// Width value for the media display position (optional).
+    /// </summary>
+    [JsonPropertyName("posw")]
+    public Int32? PosW { get; set; }
+
+    /// <summary>
+    /// Horizontal position X for displaying the media (optional).
+    /// </summary>
+    [JsonPropertyName("posx")]
+    public Int32? PosX { get; set; }
+
+    /// <summary>
+    /// Vertical position Y for displaying the media (optional).
+    /// </summary>
+    [JsonPropertyName("posy")]
+    public Int32? PosY { get; set; }
+
+    /// <summary>
+    /// Additional categorization information, if the media belongs to a subcategory.
+    /// </summary>
     [JsonPropertyName("subparent")]
-    public String? Subparent { get; set; }
-
-    [JsonPropertyName("id")]
-    public Int64? Id { get; set; }
-
-    [JsonPropertyName("version")]
-    public String? Version { get; set; }
+    public String? SubParent { get; set; }
 }

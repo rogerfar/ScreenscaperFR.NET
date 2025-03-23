@@ -20,43 +20,43 @@ public class Classification
     /// Short name of the classification (e.g., PEGI:12, ESRB:T).
     /// </summary>
     [JsonPropertyName("nomcourt")]
-    public required String ShortName { get; set; }
+    public required String Name { get; set; }
 
     /// <summary>
     /// Name in French (optional).
     /// </summary>
     [JsonPropertyName("nom_fr")]
-    public String? NameFr { get; set; }
+    public String? Fr { get; set; }
 
     /// <summary>
     /// Name in German (optional).
     /// </summary>
     [JsonPropertyName("nom_de")]
-    public String? NameDe { get; set; }
+    public String? De { get; set; }
 
     /// <summary>
     /// Name in English (optional).
     /// </summary>
     [JsonPropertyName("nom_en")]
-    public String? NameEn { get; set; }
+    public String? En { get; set; }
 
     /// <summary>
     /// Name in Spanish (optional).
     /// </summary>
     [JsonPropertyName("nom_es")]
-    public String? NameEs { get; set; }
+    public String? Es { get; set; }
 
     /// <summary>
     /// Name in Italian (optional).
     /// </summary>
     [JsonPropertyName("nom_it")]
-    public String? NameIt { get; set; }
+    public String? It { get; set; }
 
     /// <summary>
     /// Name in Portuguese (optional).
     /// </summary>
     [JsonPropertyName("nom_pt")]
-    public String? NamePt { get; set; }
+    public String? Pt { get; set; }
 
     /// <summary>
     /// ID of the parent classification (0 if it's a top-level classification).

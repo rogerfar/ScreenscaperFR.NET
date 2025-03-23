@@ -26,37 +26,37 @@ public class Region
     /// Name of the region in French.
     /// </summary>
     [JsonPropertyName("nom_fr")]
-    public required String NameFr { get; set; }
+    public required String Fr { get; set; }
 
     /// <summary>
     /// Name of the region in German.
     /// </summary>
     [JsonPropertyName("nom_de")]
-    public String? NameDe { get; set; }
+    public String? De { get; set; }
 
     /// <summary>
     /// Name of the region in English.
     /// </summary>
     [JsonPropertyName("nom_en")]
-    public String? NameEn { get; set; }
+    public String? En { get; set; }
 
     /// <summary>
     /// Name of the region in Spanish.
     /// </summary>
     [JsonPropertyName("nom_es")]
-    public String? NameEs { get; set; }
+    public String? Es { get; set; }
 
     /// <summary>
     /// Name of the region in Italian.
     /// </summary>
     [JsonPropertyName("nom_it")]
-    public String? NameIt { get; set; }
+    public String? It { get; set; }
 
     /// <summary>
     /// Name of the region in Portuguese.
     /// </summary>
     [JsonPropertyName("nom_pt")]
-    public String? NamePt { get; set; }
+    public String? Pt { get; set; }
 
     /// <summary>
     /// Identifier of the parent region (0 if it’s a top-level region).
