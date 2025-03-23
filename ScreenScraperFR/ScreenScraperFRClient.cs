@@ -7,77 +7,102 @@ public interface IScreenScraperFRClient
     /// <summary>
     /// Retrieves information about the ScreenScraper server infrastructure.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<ServerInfrastructureInfo> GetInfrastructureInfo(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves information about the authenticated ScreenScraper user.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<UserInfo?> GetUserInfo(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of user levels on ScreenScraper.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<UserLevel>> GetUserLevels(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of supported player counts (e.g., 1-4 players, multiplayer, etc.).
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<PlayerCount>> GetPlayerCounts(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of supported media types (e.g., box, screenshot, title screen).
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<String>> GetSupportTypes(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of ROM types recognized by ScreenScraper.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<String>> GetRomTypes(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of game genres.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<Genre>> GetGenres(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of supported regions (e.g., Europe, USA, Japan).
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<Region>> GetRegions(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of supported languages.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<Language>> GetLanguages(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of game content ratings/classifications (e.g., ESRB, PEGI).
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<Classification>> GetClassifications(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of available media types for game systems.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<SystemMedia>> GetSystemMedias(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of available media types for games.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<GameMedia>> GetGameMedias(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of available text information fields for games (e.g., summary, developer).
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<GameInfoField>> GetGameInfoFields(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of available text information fields for ROMs.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<RomInfoField>> GetRomInfoFields(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Downloads media images for game groups (e.g., sagas or franchises).
-    /// Returns null when no media is available.
+    /// Downloads media images for game groups (e.g., genres, families, themes).
+    /// If the hash (CRC, MD5, SHA1) of the local image matches the server, returns "CRCOK", "MD5OK", or "SHA1OK".
+    /// Returns "NOMEDIA" if no media is found.
     /// </summary>
+    /// <param name="groupId">Numeric group ID (genre, family, theme, etc.).</param>
+    /// <param name="media">Media identifier (e.g., logo-monochrome).</param>
+    /// <param name="mediaFormat">Optional: File extension of the media (e.g., jpg, png).</param>
+    /// <param name="crc">Optional: CRC32 checksum of the local file.</param>
+    /// <param name="md5">Optional: MD5 checksum of the local file.</param>
+    /// <param name="sha1">Optional: SHA1 checksum of the local file.</param>
+    /// <param name="maxWidth">Optional: Maximum width of the returned image.</param>
+    /// <param name="maxHeight">Optional: Maximum height of the returned image.</param>
+    /// <param name="outputFormat">Optional: Format of the returned image (png or jpg).</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<MediaResponse> GetGroupMedia(Int32 groupId,
                                       String media,
                                       String? mediaFormat = null,
@@ -90,8 +115,19 @@ public interface IScreenScraperFRClient
                                       CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Downloads media images for game companies (e.g., logos, banners).
+    /// Downloads media images for a company (e.g., publisher or developer logo).
+    /// Supports hash checking and resizing options.
     /// </summary>
+    /// <param name="companyId">Numeric ID of the company.</param>
+    /// <param name="media">Media identifier (e.g., logo-monochrome).</param>
+    /// <param name="mediaFormat">Optional: File extension of the media.</param>
+    /// <param name="crc">Optional: CRC32 checksum of the local file.</param>
+    /// <param name="md5">Optional: MD5 checksum of the local file.</param>
+    /// <param name="sha1">Optional: SHA1 checksum of the local file.</param>
+    /// <param name="maxWidth">Optional: Maximum width of the returned image.</param>
+    /// <param name="maxHeight">Optional: Maximum height of the returned image.</param>
+    /// <param name="outputFormat">Optional: Format of the returned image (png or jpg).</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<MediaResponse> GetCompanyMedia(Int32 companyId,
                                         String media,
                                         String? mediaFormat = null,
@@ -106,11 +142,23 @@ public interface IScreenScraperFRClient
     /// <summary>
     /// Retrieves the list of systems and associated system/media information.
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<List<System>> GetSystems(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Downloads image media (e.g., logos, artwork) for a system.
+    /// Downloads image media (e.g., logos or artwork) for a system.
+    /// Uses checksums to optionally skip downloading if the local version is current.
     /// </summary>
+    /// <param name="systemId">ID of the target system.</param>
+    /// <param name="media">Media identifier (e.g., wheel, logo, etc.).</param>
+    /// <param name="mediaFormat">Optional: File extension format.</param>
+    /// <param name="crc">Optional: CRC32 of the local file.</param>
+    /// <param name="md5">Optional: MD5 of the local file.</param>
+    /// <param name="sha1">Optional: SHA1 of the local file.</param>
+    /// <param name="maxWidth">Optional: Maximum image width.</param>
+    /// <param name="maxHeight">Optional: Maximum image height.</param>
+    /// <param name="outputFormat">Optional: Desired output image format.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<MediaResponse> GetSystemMedia(Int32 systemId,
                                        String media,
                                        String? mediaFormat = null,
@@ -123,8 +171,16 @@ public interface IScreenScraperFRClient
                                        CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Downloads video media (e.g., intro videos) for a system.
+    /// Downloads video media (e.g., intro video) for a system.
+    /// Uses checksum comparison to return status-only when possible.
     /// </summary>
+    /// <param name="systemId">System ID.</param>
+    /// <param name="media">Media type to download.</param>
+    /// <param name="mediaFormat">Optional file format (mp4, etc.).</param>
+    /// <param name="crc">Optional CRC checksum of the local video.</param>
+    /// <param name="md5">Optional MD5 checksum.</param>
+    /// <param name="sha1">Optional SHA1 checksum.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<MediaResponse> GetSystemVideo(Int32 systemId,
                                        String media,
                                        String? mediaFormat = null,
@@ -164,6 +220,7 @@ public interface IScreenScraperFRClient
 
     /// <summary>
     /// Downloads image media for a specific game.
+    /// May return a status string (e.g., MD5OK) instead of media if local hash matches server.
     /// </summary>
     Task<MediaResponse> GetGameMedia(Int32 systemId,
                                      Int32 gameId,
@@ -178,7 +235,8 @@ public interface IScreenScraperFRClient
                                      CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Downloads video media for a specific game.
+    /// Downloads video content for a game (e.g., gameplay trailer).
+    /// Returns a hash match status if the file is already up to date locally.
     /// </summary>
     Task<MediaResponse> GetGameVideo(Int32 systemId,
                                      Int32 gameId,
@@ -190,7 +248,8 @@ public interface IScreenScraperFRClient
                                      CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Downloads manuals for a specific game.
+    /// Downloads the PDF manual for a specific game.
+    /// Includes optional hash checks for optimized sync.
     /// </summary>
     Task<MediaResponse> GetGameManual(Int32 systemId,
                                       Int32 gameId,
