@@ -5,14 +5,16 @@ public interface IScreenScraperFRClient
     /// <summary>
     /// Retrieves information about the ScreenScraper server infrastructure.
     /// </summary>
+    /// <param name="cached">Retrieve the cached version, updated each time a search or get game request is made.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<ServerInfrastructureInfo> GetInfrastructureInfo(CancellationToken cancellationToken = default);
+    Task<ServerInfrastructureInfo> GetInfrastructureInfo(Boolean cached = true, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves information about the authenticated ScreenScraper user.
     /// </summary>
+    /// <param name="cached">Retrieve the cached version, updated each time a search or get game request is made.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task<UserInfo?> GetUserInfo(CancellationToken cancellationToken = default);
+    Task<UserInfo?> GetUserInfo(Boolean cached = true, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of user levels on ScreenScraper.
@@ -267,6 +269,9 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
     private readonly Store _store = new();
     private readonly Requests _requests;
 
+    private ServerInfrastructureInfo? _serverInfrastructureInfo = null;
+    private UserInfo? _userInfo = null;
+
     /// <summary>
     ///     Initialize the ScreenScraperFR API.
     /// </summary>
@@ -287,17 +292,30 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         _requests = new(client, _store);
     }
 
-    public async Task<ServerInfrastructureInfo> GetInfrastructureInfo(CancellationToken cancellationToken = default)
+    public async Task<ServerInfrastructureInfo> GetInfrastructureInfo(Boolean cached = true, CancellationToken cancellationToken = default)
     {
-        var parameters = new Dictionary<String, String>();
-        var response = await _requests.GetRequestAsync<ServerInfrastructureInfoResponse>("ssinfraInfos.php", false, parameters, cancellationToken);
+        if (cached && _serverInfrastructureInfo != null)
+        {
+            return _serverInfrastructureInfo;
+        }
+
+        var response = await _requests.GetRequestAsync<ServerInfrastructureInfoResponse>("ssinfraInfos.php", false, null, cancellationToken);
+
+        _serverInfrastructureInfo = response.ServerInfrastructureInfo;
 
         return response.ServerInfrastructureInfo;
     }
 
-    public async Task<UserInfo?> GetUserInfo(CancellationToken cancellationToken = default)
+    public async Task<UserInfo?> GetUserInfo(Boolean cached = true, CancellationToken cancellationToken = default)
     {
+        if (cached && _userInfo != null)
+        {
+            return _userInfo;
+        }
+
         var response = await _requests.GetRequestAsync<UserInfoResponse>("ssuserInfos.php", true, null, cancellationToken);
+        
+        _userInfo = response.UserInfo;
 
         return response.UserInfo;
     }
@@ -794,6 +812,16 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
 
         var response = await _requests.GetRequestAsync<SearchGamesResponse>("jeuRecherche.php", true, parameters, cancellationToken);
 
+        if (response.ServerInfrastructureInfo != null)
+        {
+            _serverInfrastructureInfo = response.ServerInfrastructureInfo;
+        }
+
+        if (response.UserInfo != null)
+        {
+            _userInfo = response.UserInfo;
+        }
+
         return [.. response.Games];
     }
 
@@ -854,6 +882,16 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
         }
 
         var response = await _requests.GetRequestAsync<GetGameResponse>("jeuInfos.php", true, parameters, cancellationToken);
+
+        if (response.ServerInfrastructureInfo != null)
+        {
+            _serverInfrastructureInfo = response.ServerInfrastructureInfo;
+        }
+
+        if (response.UserInfo != null)
+        {
+            _userInfo = response.UserInfo;
+        }
 
         return response.Game;
     }
