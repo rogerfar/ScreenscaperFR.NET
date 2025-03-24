@@ -63,19 +63,22 @@ public class UserInfo
     /// Number of user proposals approved by moderators.
     /// </summary>
     [JsonPropertyName("propositionok")]
-    public Int32 ApprovedProposals { get; set; }
+    [JsonConverter(typeof(JsonInt32Converter))]
+    public Int32? ApprovedProposals { get; set; }
 
     /// <summary>
     /// Number of user proposals rejected by moderators.
     /// </summary>
     [JsonPropertyName("propositionko")]
-    public Int32 RejectedProposals { get; set; }
+    [JsonConverter(typeof(JsonInt32Converter))]
+    public Int32? RejectedProposals { get; set; }
 
     /// <summary>
     /// Percentage of user proposals that were rejected.
     /// </summary>
     [JsonPropertyName("quotarefu")]
-    public Int32 RejectionRate { get; set; }
+    [JsonConverter(typeof(JsonInt32Converter))]
+    public Int32? RejectionRate { get; set; }
 
     /// <summary>
     /// Number of threads allowed for the user (also applies to non-registered users).
@@ -131,7 +134,7 @@ public class UserInfo
     /// </summary>
     [JsonPropertyName("datedernierevisite")]
     [JsonConverter(typeof(JsonDateTimeOffsetConverter))]
-    public DateTimeOffset LastVisitDate { get; set; }
+    public DateTimeOffset? LastVisitDate { get; set; }
 
     /// <summary>
     /// User's favorite region.

@@ -7,13 +7,13 @@ namespace ScreenScraperFR;
 /// </summary>
 internal class SearchGamesResponse
 {
-    [JsonPropertyName("jeux")]
-    [JsonConverter(typeof(JsonEmptyArrayConverter<Game>))]
-    public List<Game> Games { get; set; } = [];
-
     [JsonPropertyName("serveurs")]
     public ServerInfrastructureInfo? ServerInfrastructureInfo { get; set; } = new();
 
     [JsonPropertyName("ssuser")]
     public UserInfo? UserInfo { get; set; }
+
+    [JsonPropertyName("jeux")]
+    [JsonConverter(typeof(JsonEmptyArrayConverter<Game>))]
+    public List<Game> Games { get; set; } = [];
 }

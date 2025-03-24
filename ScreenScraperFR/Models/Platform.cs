@@ -4,6 +4,12 @@ namespace ScreenScraperFR;
 
 internal class PlatformsResponse
 {
+    [JsonPropertyName("serveurs")]
+    public ServerInfrastructureInfo? ServerInfrastructureInfo { get; set; } = new();
+
+    [JsonPropertyName("ssuser")]
+    public UserInfo? UserInfo { get; set; }
+
     [JsonPropertyName("systemes")]
     [JsonConverter(typeof(JsonEmptyArrayConverter<Platform>))]
     public List<Platform> Platforms { get; set; } = [];

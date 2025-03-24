@@ -1,40 +1,65 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.Json;
 
-namespace ScreenScraperFR;
-
 public class JsonEmptyArrayConverter<T> : JsonConverter<List<T>>
 {
     public override List<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartArray)
         {
-            throw new JsonException("Expected start of array");
+            throw new JsonException($"Expected StartArray token, got {reader.TokenType}");
         }
 
-        // Read the first token after the start array
-        reader.Read();
-
-        // Check if we have the empty object case [{}]
-        if (reader.TokenType == JsonTokenType.StartObject)
+        var list = new List<T>();
+        
+        while (reader.Read())
         {
-            var startDepth = reader.CurrentDepth;
-            reader.Read(); // Read next token
-            
-            // If we immediately hit EndObject, it's an empty object
-            if (reader.TokenType == JsonTokenType.EndObject)
+            if (reader.TokenType == JsonTokenType.EndArray)
             {
-                reader.Read(); // Read past the end of array
-                return new List<T>(); // Return empty list
+                return list;
             }
-            
-            // If we get here, it's a real object, so we need to rewind
-            reader.Skip();
-            reader.Skip();
+
+            if (reader.TokenType == JsonTokenType.StartObject)
+            {
+                try
+                {
+                    // Save the current state and get the full JSON being processed
+                    using var jsonDoc = JsonDocument.ParseValue(ref reader);
+                    var jsonString = jsonDoc.RootElement.GetRawText();
+
+                    // If it's an empty object, skip it
+                    if (!jsonDoc.RootElement.EnumerateObject().Any())
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        var item = JsonSerializer.Deserialize<T>(jsonString, options);
+                        if (item != null)
+                        {
+                            list.Add(item);
+                        }
+                    }
+                    catch (JsonException ex)
+                    {
+                        throw new JsonException(
+                            $"Failed to deserialize type {typeof(T).Name}. " +
+                            $"JSON being deserialized: {jsonString}", ex);
+                    }
+                }
+                catch (JsonException ex)
+                {
+                    throw new JsonException(
+                        $"Error processing array element for type {typeof(T).Name}. " +
+                        $"Current token: {reader.TokenType}. " +
+                        $"Current depth: {reader.CurrentDepth}. " +
+                        $"Position: {reader.BytesConsumed}", ex);
+                }
+            }
         }
 
-        // If we get here, we have actual game data to deserialize
-        return JsonSerializer.Deserialize<List<T>>(ref reader, options) ?? new List<T>();
+        return list;
     }
 
     public override void Write(Utf8JsonWriter writer, List<T> value, JsonSerializerOptions options)

@@ -387,6 +387,16 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
     {
         var response = await _requests.GetRequestAsync<PlatformsResponse>("systemesListe.php", false, null, cancellationToken);
 
+        if (response.ServerInfrastructureInfo != null)
+        {
+            _serverInfrastructureInfo = response.ServerInfrastructureInfo;
+        }
+
+        if (response.UserInfo != null)
+        {
+            _userInfo = response.UserInfo;
+        }
+
         return response.Platforms;
     }
 
