@@ -8,5 +8,6 @@ namespace ScreenScraperFR;
 internal class SearchGamesResponse
 {
     [JsonPropertyName("jeux")]
+    [JsonConverter(typeof(JsonEmptyArrayConverter<Game>))]
     public List<Game> Games { get; set; } = [];
 }

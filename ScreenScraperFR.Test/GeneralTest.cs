@@ -215,6 +215,16 @@ public class GeneralTest
 
         Assert.NotNull(searchResults);
     }
+
+    [Fact]
+    public async Task SearchGamesNoResult()
+    {
+        var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
+
+        var searchResults = await client.SearchGames("1080 Snowboarding", 14);
+
+        Assert.Empty(searchResults);
+    }
     
     [Fact]
     public async Task GetGame()

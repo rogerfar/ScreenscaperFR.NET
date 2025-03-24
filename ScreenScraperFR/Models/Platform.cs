@@ -5,6 +5,7 @@ namespace ScreenScraperFR;
 internal class PlatformsResponse
 {
     [JsonPropertyName("systemes")]
+    [JsonConverter(typeof(JsonEmptyArrayConverter<Platform>))]
     public List<Platform> Platforms { get; set; } = [];
 }
 
