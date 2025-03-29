@@ -154,7 +154,7 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var groupMedia = await client.GetGroupImage(1, "GetGroupImage.png", "logo-monochrome");
+        var groupMedia = await client.GetGroupImage(1, "logo-monochrome", "GetGroupImage.png");
 
         Assert.Equal(MediaResponse.Ok, groupMedia);
     }
@@ -164,7 +164,7 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var companyMedia = await client.GetCompanyImage(1, "GetCompanyImage.png", "logo-monochrome");
+        var companyMedia = await client.GetCompanyImage(1, "logo-monochrome", "GetCompanyImage.png");
 
         Assert.Equal(MediaResponse.Ok, companyMedia);
     }
