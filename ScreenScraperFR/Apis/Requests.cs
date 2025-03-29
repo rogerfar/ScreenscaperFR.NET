@@ -14,7 +14,7 @@ internal class Requests(HttpClient httpClient, Store store)
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
-    private async Task<(Byte[]? Buffer, String? ContentType)> Request(String url, Boolean requireAuthentication, IDictionary<String, String>? parameters, CancellationToken cancellationToken) 
+    private async Task<Byte[]?> TextRequest(String url, Boolean requireAuthentication, IDictionary<String, String>? parameters, CancellationToken cancellationToken) 
     {
         url = $"{Store.API_URL}{Store.API_VERSION}{url}?output=json&softname={HttpUtility.UrlEncode(store.Softname)}&devid={store.DevId}&devpassword={store.DevPassword}";
         
@@ -34,7 +34,7 @@ internal class Requests(HttpClient httpClient, Store store)
 
         if (response.StatusCode == HttpStatusCode.NoContent)
         {
-            return (null, null);
+            return null;
         }
 
         var buffer = await response.Content.ReadAsByteArrayAsync(cancellationToken);
@@ -48,20 +48,20 @@ internal class Requests(HttpClient httpClient, Store store)
             throw new ScreenScraperFRException(error, (Int32) response.StatusCode);
         }
 
-        return (buffer, response.Content.Headers.ContentType?.MediaType);
+        return buffer;
     }
-    
+
     public async Task<T> GetRequestAsync<T>(String url, Boolean requireAuthentication, IDictionary<String, String>? parameters, CancellationToken cancellationToken)
         where T : class, new()
     {
-        var request = await Request(url, requireAuthentication, parameters, cancellationToken);
+        var request = await TextRequest(url, requireAuthentication, parameters, cancellationToken);
 
-        if (request.Buffer == null)
+        if (request == null)
         {
             return new();
         }
 
-        var requestResult = Encoding.UTF8.GetString(request.Buffer, 0, request.Buffer.Length);
+        var requestResult = Encoding.UTF8.GetString(request, 0, request.Length);
 
         try
         {
@@ -94,29 +94,69 @@ internal class Requests(HttpClient httpClient, Store store)
         }
     }
 
-    public async Task<MediaResponse> GetMediaRequestAsync(String url, Boolean requireAuthentication, IDictionary<String, String>? parameters, CancellationToken cancellationToken)
+    public async Task<MediaResponse> GetMediaRequestAsync(String url, String destinationPath, Boolean requireAuthentication, IDictionary<String, String>? parameters, EventHandler<DownloadProgressEventArgs>? progressEvent, CancellationToken cancellationToken)
     {
-        var request = await Request(url, requireAuthentication, parameters, cancellationToken);
-
-        if (request.ContentType == "text/html")
+        url = $"{Store.API_URL}{Store.API_VERSION}{url}?output=json&softname={HttpUtility.UrlEncode(store.Softname)}&devid={store.DevId}&devpassword={store.DevPassword}";
+        
+        if (requireAuthentication)
         {
-            if (request.Buffer == null)
-            {
-                return new(null, null);
-            }
+            url = $"{url}&ssid={store.UserName}&sspassword={store.UserPassword}";
+        }
 
-            var resultMessage = Encoding.UTF8.GetString(request.Buffer, 0, request.Buffer.Length).Trim().ToUpper();
+        if (parameters is {Count: > 0})
+        {
+            var parametersString = String.Join("&", parameters.Select(m => $"{m.Key}={HttpUtility.UrlEncode(m.Value)}"));
+
+            url = $"{url}&{parametersString}";
+        }
+        
+        using var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var mediaType = response.Content.Headers.ContentType?.MediaType;
+        
+        if (mediaType == "text/html")
+        {
+            var textBytesResponse = await response.Content.ReadAsByteArrayAsync(cancellationToken);
+
+            var resultMessage = Encoding.UTF8.GetString(textBytesResponse, 0, textBytesResponse.Length).Trim().ToUpper();
 
             return resultMessage switch
             {
-                "CRCOK" => new(request.Buffer, MediaResponseType.CrcOk),
-                "MD5OK" => new(request.Buffer, MediaResponseType.Md5Ok),
-                "SHA1OK" => new(request.Buffer, MediaResponseType.Sha1Ok),
-                "NOMEDIA" => new(request.Buffer, MediaResponseType.Nomedia),
+                "CRCOK" => MediaResponse.CrcOk,
+                "MD5OK" => MediaResponse.Md5Ok,
+                "SHA1OK" => MediaResponse.Sha1Ok,
+                "NOMEDIA" => MediaResponse.Nomedia,
                 _ => throw new($"Unknown media response: {resultMessage}")
             };
         }
 
-        return new(request.Buffer, null);
+        var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+
+        await using var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+
+        await using var fileStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
+
+        var buffer = new Byte[81920];
+        Int64 totalBytesRead = 0;
+        Int32 bytesRead;
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+
+        while ((bytesRead = await contentStream.ReadAsync(buffer, cancellationToken)) > 0)
+        {
+            await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken);
+
+            totalBytesRead += bytesRead;
+
+            if (totalBytes > 0)
+            {
+                var speedMbps = totalBytesRead / 1024.0 / 1024.0 / sw.Elapsed.TotalSeconds;
+
+                progressEvent?.Invoke(null, new(totalBytesRead, totalBytes, speedMbps));
+            }
+        }
+
+        return MediaResponse.Ok;
     }
 }

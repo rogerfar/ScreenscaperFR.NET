@@ -1,5 +1,7 @@
 ﻿namespace ScreenScraperFR;
 
+// ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable UnusedMember.Global
 public interface IScreenScraperFRClient
 {
     /// <summary>
@@ -95,6 +97,7 @@ public interface IScreenScraperFRClient
     /// </summary>
     /// <param name="groupId">Numeric group ID (genre, family, theme, etc.).</param>
     /// <param name="media">Media identifier (e.g., logo-monochrome).</param>
+    /// <param name="destinationPath">The path to download the file to.</param>
     /// <param name="mediaFormat">Optional: File extension of the media (e.g., jpg, png).</param>
     /// <param name="crc">Optional: CRC32 checksum of the local file.</param>
     /// <param name="md5">Optional: MD5 checksum of the local file.</param>
@@ -102,9 +105,11 @@ public interface IScreenScraperFRClient
     /// <param name="maxWidth">Optional: Maximum width of the returned image.</param>
     /// <param name="maxHeight">Optional: Maximum height of the returned image.</param>
     /// <param name="outputFormat">Optional: Format of the returned image (png or jpg).</param>
+    /// <param name="progressEvent">Options: Download progress event.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<MediaResponse> GetGroupImage(Int32 groupId,
                                       String media,
+                                      String destinationPath,
                                       String? mediaFormat = null,
                                       String? crc = null,
                                       String? md5 = null,
@@ -112,6 +117,7 @@ public interface IScreenScraperFRClient
                                       Int32? maxWidth = null,
                                       Int32? maxHeight = null,
                                       String? outputFormat = null,
+                                      EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                       CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -120,6 +126,7 @@ public interface IScreenScraperFRClient
     /// </summary>
     /// <param name="companyId">Numeric ID of the company.</param>
     /// <param name="media">Media identifier (e.g., logo-monochrome).</param>
+    /// <param name="destinationPath">The path to download the file to.</param>
     /// <param name="mediaFormat">Optional: File extension of the media.</param>
     /// <param name="crc">Optional: CRC32 checksum of the local file.</param>
     /// <param name="md5">Optional: MD5 checksum of the local file.</param>
@@ -127,9 +134,11 @@ public interface IScreenScraperFRClient
     /// <param name="maxWidth">Optional: Maximum width of the returned image.</param>
     /// <param name="maxHeight">Optional: Maximum height of the returned image.</param>
     /// <param name="outputFormat">Optional: Format of the returned image (png or jpg).</param>
+    /// <param name="progressEvent">Options: Download progress event.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<MediaResponse> GetCompanyImage(Int32 companyId,
                                         String media,
+                                        String destinationPath,
                                         String? mediaFormat = null,
                                         String? crc = null,
                                         String? md5 = null,
@@ -137,6 +146,7 @@ public interface IScreenScraperFRClient
                                         Int32? maxWidth = null,
                                         Int32? maxHeight = null,
                                         String? outputFormat = null,
+                                        EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -151,6 +161,7 @@ public interface IScreenScraperFRClient
     /// </summary>
     /// <param name="platformId">ID of the target platform.</param>
     /// <param name="media">Media identifier (e.g., wheel, logo, etc.).</param>
+    /// <param name="destinationPath">The path to download the file to.</param>
     /// <param name="mediaFormat">Optional: File extension format.</param>
     /// <param name="crc">Optional: CRC32 of the local file.</param>
     /// <param name="md5">Optional: MD5 of the local file.</param>
@@ -158,9 +169,11 @@ public interface IScreenScraperFRClient
     /// <param name="maxWidth">Optional: Maximum image width.</param>
     /// <param name="maxHeight">Optional: Maximum image height.</param>
     /// <param name="outputFormat">Optional: Desired output image format.</param>
+    /// <param name="progressEvent">Options: Download progress event.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<MediaResponse> GetPlatformImage(Int32 platformId,
                                          String media,
+                                         String destinationPath,
                                          String? mediaFormat = null,
                                          String? crc = null,
                                          String? md5 = null,
@@ -168,6 +181,7 @@ public interface IScreenScraperFRClient
                                          Int32? maxWidth = null,
                                          Int32? maxHeight = null,
                                          String? outputFormat = null,
+                                         EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                          CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -176,17 +190,21 @@ public interface IScreenScraperFRClient
     /// </summary>
     /// <param name="platformId">Platform ID.</param>
     /// <param name="media">Media type to download.</param>
+    /// <param name="destinationPath">The path to download the file to.</param>
     /// <param name="mediaFormat">Optional file format (mp4, etc.).</param>
     /// <param name="crc">Optional CRC checksum of the local video.</param>
     /// <param name="md5">Optional MD5 checksum.</param>
     /// <param name="sha1">Optional SHA1 checksum.</param>
+    /// <param name="progressEvent">Options: Download progress event.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task<MediaResponse> GetPlatformVideo(Int32 platformId,
                                          String media,
+                                         String destinationPath,
                                          String? mediaFormat = null,
                                          String? crc = null,
                                          String? md5 = null,
                                          String? sha1 = null,
+                                         EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                          CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -225,6 +243,7 @@ public interface IScreenScraperFRClient
     Task<MediaResponse> GetGameImage(Int32 platformId,
                                      Int32 gameId,
                                      String media,
+                                     String destinationPath,
                                      String? mediaFormat = null,
                                      String? crc = null,
                                      String? md5 = null,
@@ -232,6 +251,7 @@ public interface IScreenScraperFRClient
                                      Int32? maxWidth = null,
                                      Int32? maxHeight = null,
                                      String? outputFormat = null,
+                                     EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                      CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -241,10 +261,12 @@ public interface IScreenScraperFRClient
     Task<MediaResponse> GetGameVideo(Int32 platformId,
                                      Int32 gameId,
                                      String media,
+                                     String destinationPath,
                                      String? mediaFormat = null,
                                      String? crc = null,
                                      String? md5 = null,
                                      String? sha1 = null,
+                                     EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                      CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -254,10 +276,12 @@ public interface IScreenScraperFRClient
     Task<MediaResponse> GetGameManual(Int32 platformId,
                                       Int32 gameId,
                                       String media,
+                                      String destinationPath,
                                       String? mediaFormat = null,
                                       String? crc = null,
                                       String? md5 = null,
                                       String? sha1 = null,
+                                      EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                       CancellationToken cancellationToken = default);
 }
 
@@ -269,8 +293,8 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
     private readonly Store _store = new();
     private readonly Requests _requests;
 
-    private ServerInfrastructureInfo? _serverInfrastructureInfo = null;
-    private UserInfo? _userInfo = null;
+    private ServerInfrastructureInfo? _serverInfrastructureInfo;
+    private UserInfo? _userInfo;
 
     /// <summary>
     ///     Initialize the ScreenScraperFR API.
@@ -423,6 +447,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
 
     public async Task<MediaResponse> GetCompanyImage(Int32 companyId,
                                                      String media,
+                                                     String destinationPath,
                                                      String? mediaFormat = null,
                                                      String? crc = null,
                                                      String? md5 = null,
@@ -430,6 +455,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
                                                      Int32? maxWidth = null,
                                                      Int32? maxHeight = null,
                                                      String? outputFormat = null,
+                                                     EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                                      CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
@@ -477,7 +503,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
             parameters.Add("outputformat", outputFormat);
         }
 
-        var response = await _requests.GetMediaRequestAsync("mediaCompagnie.php", true, parameters, cancellationToken);
+        var response = await _requests.GetMediaRequestAsync("mediaCompagnie.php", destinationPath, true, parameters, progressEvent, cancellationToken);
 
         return response;
     }
@@ -485,6 +511,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
     public async Task<MediaResponse> GetGameImage(Int32 platformId,
                                                   Int32 gameId,
                                                   String media,
+                                                  String destinationPath,
                                                   String? mediaFormat = null,
                                                   String? crc = null,
                                                   String? md5 = null,
@@ -492,6 +519,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
                                                   Int32? maxWidth = null,
                                                   Int32? maxHeight = null,
                                                   String? outputFormat = null,
+                                                  EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                                   CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
@@ -542,13 +570,14 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
             parameters.Add("outputformat", outputFormat);
         }
 
-        var response = await _requests.GetMediaRequestAsync("mediaJeu.php", true, parameters, cancellationToken);
+        var response = await _requests.GetMediaRequestAsync("mediaJeu.php", destinationPath, true, parameters, progressEvent, cancellationToken);
 
         return response;
     }
 
     public async Task<MediaResponse> GetGroupImage(Int32 groupId,
                                                    String media,
+                                                   String destinationPath,
                                                    String? mediaFormat = null,
                                                    String? crc = null,
                                                    String? md5 = null,
@@ -556,6 +585,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
                                                    Int32? maxWidth = null,
                                                    Int32? maxHeight = null,
                                                    String? outputFormat = null,
+                                                   EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                                    CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
@@ -603,13 +633,14 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
             parameters.Add("outputformat", outputFormat);
         }
 
-        var response = await _requests.GetMediaRequestAsync("mediaGroup.php", true, parameters, cancellationToken);
+        var response = await _requests.GetMediaRequestAsync("mediaGroup.php", destinationPath, true, parameters, progressEvent, cancellationToken);
 
         return response;
     }
 
     public async Task<MediaResponse> GetPlatformImage(Int32 platformId,
                                                       String media,
+                                                      String destinationPath,
                                                       String? mediaFormat = null,
                                                       String? crc = null,
                                                       String? md5 = null,
@@ -617,6 +648,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
                                                       Int32? maxWidth = null,
                                                       Int32? maxHeight = null,
                                                       String? outputFormat = null,
+                                                      EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                                       CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
@@ -664,17 +696,19 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
             parameters.Add("outputformat", outputFormat);
         }
 
-        var response = await _requests.GetMediaRequestAsync("mediaSysteme.php", true, parameters, cancellationToken);
+        var response = await _requests.GetMediaRequestAsync("mediaSysteme.php", destinationPath, true, parameters, progressEvent, cancellationToken);
 
         return response;
     }
 
     public async Task<MediaResponse> GetPlatformVideo(Int32 platformId,
                                                       String media,
+                                                      String destinationPath,
                                                       String? mediaFormat = null,
                                                       String? crc = null,
                                                       String? md5 = null,
                                                       String? sha1 = null,
+                                                      EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                                       CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
@@ -707,7 +741,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
             parameters.Add("sha1", sha1);
         }
 
-        var response = await _requests.GetMediaRequestAsync("mediaVideoSysteme.php", true, parameters, cancellationToken);
+        var response = await _requests.GetMediaRequestAsync("mediaVideoSysteme.php", destinationPath, true, parameters, progressEvent, cancellationToken);
 
         return response;
     }
@@ -715,10 +749,12 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
     public async Task<MediaResponse> GetGameVideo(Int32 platformId,
                                                   Int32 gameId,
                                                   String media,
+                                                  String destinationPath,
                                                   String? mediaFormat = null,
                                                   String? crc = null,
                                                   String? md5 = null,
                                                   String? sha1 = null,
+                                                  EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                                   CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
@@ -754,7 +790,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
             parameters.Add("sha1", sha1);
         }
 
-        var response = await _requests.GetMediaRequestAsync("mediaVideoJeu.php", true, parameters, cancellationToken);
+        var response = await _requests.GetMediaRequestAsync("mediaVideoJeu.php", destinationPath, true, parameters, progressEvent, cancellationToken);
 
         return response;
     }
@@ -762,10 +798,12 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
     public async Task<MediaResponse> GetGameManual(Int32 platformId,
                                                    Int32 gameId,
                                                    String media,
+                                                   String destinationPath,
                                                    String? mediaFormat = null,
                                                    String? crc = null,
                                                    String? md5 = null,
                                                    String? sha1 = null,
+                                                   EventHandler<DownloadProgressEventArgs>? progressEvent = null,
                                                    CancellationToken cancellationToken = default)
     {
         var parameters = new Dictionary<String, String>
@@ -801,7 +839,7 @@ public class ScreenScraperFRClient : IScreenScraperFRClient
             parameters.Add("sha1", sha1);
         }
 
-        var response = await _requests.GetMediaRequestAsync("mediaManuelJeu.php", true, parameters, cancellationToken);
+        var response = await _requests.GetMediaRequestAsync("mediaManuelJeu.php", destinationPath, true, parameters, progressEvent, cancellationToken);
 
         return response;
     }

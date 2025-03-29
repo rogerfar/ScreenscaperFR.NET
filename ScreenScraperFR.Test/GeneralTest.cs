@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -153,11 +154,9 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var groupMedia = await client.GetGroupImage(1, "logo-monochrome");
+        var groupMedia = await client.GetGroupImage(1, "GetGroupImage.png", "logo-monochrome");
 
-        await File.WriteAllBytesAsync("GetGroupImage.png", groupMedia.Data!);
-
-        Assert.NotNull(groupMedia);
+        Assert.Equal(MediaResponse.Ok, groupMedia);
     }
     
     [Fact]
@@ -165,11 +164,9 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var companyMedia = await client.GetCompanyImage(1, "logo-monochrome");
+        var companyMedia = await client.GetCompanyImage(1, "GetCompanyImage.png", "logo-monochrome");
 
-        await File.WriteAllBytesAsync("GetCompanyImage.png", companyMedia.Data!);
-
-        Assert.NotNull(companyMedia);
+        Assert.Equal(MediaResponse.Ok, companyMedia);
     }
     
     [Fact]
@@ -187,11 +184,9 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var platformImage = await client.GetPlatformImage(1, "wheel(wor)");
+        var platformImage = await client.GetPlatformImage(1, "wheel(wor)", "GetPlatformImage.png");
 
-        await File.WriteAllBytesAsync("GetPlatformImage.png", platformImage.Data!);
-
-        Assert.NotNull(platformImage);
+        Assert.Equal(MediaResponse.Ok, platformImage);
     }
 
     [Fact]
@@ -199,11 +194,24 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var platformVideo = await client.GetPlatformVideo(1, "video");
+        var platformVideo = await client.GetPlatformVideo(1, "video", "GetPlatformVideo.mp4");
 
-        await File.WriteAllBytesAsync("GetPlatformVideo.mp4", platformVideo.Data!);
+        Assert.Equal(MediaResponse.Ok, platformVideo);
+    }
 
-        Assert.NotNull(platformVideo);
+    [Fact]
+    public async Task GetPlatformVideoWithProgress()
+    {
+        var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
+
+        var events = new List<DownloadProgressEventArgs>();
+
+        await client.GetPlatformVideo(1, "video", "GetPlatformVideo.mp4", progressEvent: (sender, args) =>
+        {
+            events.Add(args);
+        });
+
+        Assert.NotEmpty(events);
     }
     
     [Fact]
@@ -225,7 +233,7 @@ public class GeneralTest
 
         Assert.Empty(searchResults);
     }
-    
+
     [Fact]
     public async Task GetGame()
     {
@@ -235,17 +243,35 @@ public class GeneralTest
 
         Assert.NotNull(game);
     }
+    
+    [Fact]
+    public async Task GetGameByName()
+    {
+        var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
+
+        var game = await client.GetGame(14, "rom", "AeroFighters Assault (USA).zip");
+
+        Assert.NotNull(game);
+    }
+
+    [Fact]
+    public async Task GetGameByNameWithoutType()
+    {
+        var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
+
+        var game = await client.GetGame(14, "", "AeroFighters Assault (USA).zip");
+
+        Assert.NotNull(game);
+    }
 
     [Fact]
     public async Task GetGameImage()
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
         
-        var gameMedia = await client.GetGameImage(1, 3, "wheel-hd(wor)");
-
-        await File.WriteAllBytesAsync("GetGameImage.png", gameMedia.Data!);
-
-        Assert.NotNull(gameMedia);
+        var gameMedia = await client.GetGameImage(1, 3, "wheel-hd(wor)", "GetGameImage.png");
+        
+        Assert.Equal(MediaResponse.Ok, gameMedia);
     }
 
     [Fact]
@@ -255,9 +281,9 @@ public class GeneralTest
 
         var md5 = await CreateMd5("GetGameImage.png");
         
-        var gameMedia = await client.GetGameImage(1, 3, "wheel-hd(wor)", null, null, md5);
+        var result = await client.GetGameImage(1, 3, "wheel-hd(wor)", "GetGameImage.png", null, null, md5);
 
-        Assert.Equal(MediaResponseType.Md5Ok, gameMedia.Result);
+        Assert.Equal(MediaResponse.Md5Ok, result);
     }
     
     [Fact]
@@ -265,11 +291,9 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var gameVideo = await client.GetGameVideo(1, 3, "video");
-
-        await File.WriteAllBytesAsync("GetGameVideo.mp4", gameVideo.Data!);
-
-        Assert.NotNull(gameVideo);
+        var gameVideo = await client.GetGameVideo(1, 3, "video", "GetGameVideo.mp4");
+        
+        Assert.Equal(MediaResponse.Ok, gameVideo);
     }
     
     [Fact]
@@ -277,11 +301,9 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var gameVideo = await client.GetGameManual(1, 3, "manuel(eu)");
-
-        await File.WriteAllBytesAsync("GetGameManual.pdf", gameVideo.Data!);
-
-        Assert.NotNull(gameVideo);
+        var gameManual = await client.GetGameManual(1, 3, "manuel(eu)", "GetGameManual.pdf");
+        
+        Assert.Equal(MediaResponse.Ok, gameManual);
     }
 
     private static async Task<String> CreateMd5(String fileName)

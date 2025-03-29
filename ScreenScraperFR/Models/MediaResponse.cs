@@ -1,13 +1,8 @@
 ﻿namespace ScreenScraperFR;
 
-public class MediaResponse(Byte[]? data, MediaResponseType? response)
+public enum MediaResponse
 {
-    public Byte[]? Data { get; } = data;
-    public MediaResponseType? Result { get; } = response;
-}
-
-public enum MediaResponseType
-{
+    Ok,
     CrcOk,
     Md5Ok,
     Sha1Ok,
