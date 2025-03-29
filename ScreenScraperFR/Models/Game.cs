@@ -633,7 +633,7 @@ public class GameRom
     /// SHA1 checksum of the ROM file.
     /// </summary>
     [JsonPropertyName("romsha1")]
-    public required String Sha1 { get; set; }
+    public String? Sha1 { get; set; }
 
     /// <summary>
     /// Size of the ROM file or folder in bytes.

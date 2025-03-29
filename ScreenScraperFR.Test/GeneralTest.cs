@@ -249,7 +249,7 @@ public class GeneralTest
     {
         var client = new ScreenScraperFRClient("ScreenScraperFR.NET", "jelos", "jelos");
 
-        var game = await client.GetGame(14, "rom", "AeroFighters Assault (USA).zip");
+        var game = await client.GetGame(14, "rom", "Mike Piazza's Strike Zone (USA).zip");
 
         Assert.NotNull(game);
     }
