@@ -11,6 +11,8 @@ internal class JsonInt32Converter : JsonConverter<Int32?>
         {
             case JsonTokenType.Null:
                 return null;
+            case JsonTokenType.Number:
+                return reader.GetInt32();
             case JsonTokenType.String:
             {
                 var stringValue = reader.GetString();
