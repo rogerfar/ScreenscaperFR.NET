@@ -50,7 +50,8 @@ public class ServerInfrastructureInfo
     /// Total number of API accesses today (GMT+1).
     /// </summary>
     [JsonPropertyName("apiacces")]
-    public Int32 ApiAccessesToday { get; set; }
+    [JsonConverter(typeof(JsonInt32Converter))]
+    public Int32? ApiAccessesToday { get; set; }
 
     /// <summary>
     /// Indicates whether the API is closed to anonymous users (true = closed).

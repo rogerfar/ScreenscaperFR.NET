@@ -39,6 +39,11 @@ internal class Requests(HttpClient httpClient, Store store)
 
         var buffer = await response.Content.ReadAsByteArrayAsync(cancellationToken);
 
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+
         if (!response.IsSuccessStatusCode)
         {
             var text = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
