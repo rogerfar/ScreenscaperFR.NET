@@ -78,6 +78,7 @@ public class Platform
     /// ID of the parent platform, if applicable.
     /// </summary>
     [JsonPropertyName("parentid")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? ParentId { get; set; }
 }
 

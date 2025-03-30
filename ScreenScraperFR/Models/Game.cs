@@ -67,12 +67,14 @@ public class Game
     /// ID of the game this one is a clone of (if applicable).
     /// </summary>
     [JsonPropertyName("cloneof")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? CloneOfId { get; set; }
 
     /// <summary>
     /// Screen rotation (for arcade games).
     /// </summary>
     [JsonPropertyName("rotation")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? Rotation { get; set; }
 
     /// <summary>
@@ -85,12 +87,14 @@ public class Game
     /// ID of the game's control configuration.
     /// </summary>
     [JsonPropertyName("controles")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? ControlSchemeId { get; set; }
 
     /// <summary>
     /// Number of colors used in the game (for arcade).
     /// </summary>
     [JsonPropertyName("couleurs")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? ColorCount { get; set; }
 
     [JsonPropertyName("sp2kcfg")]
@@ -169,6 +173,7 @@ public class Game
     /// ID of the main ROM assigned to this game.
     /// </summary>
     [JsonPropertyName("romid")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? RomId { get; set; }
 
     /// <summary>
@@ -223,6 +228,7 @@ public class GamePlatform
     /// Numeric ID of the parent platform, if this is a sub-platform.
     /// </summary>
     [JsonPropertyName("parentid")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? ParentId { get; set; }
 }
 
@@ -392,6 +398,7 @@ public class GameSeries
     /// ID of the parent item if this belongs to a hierarchy (e.g., subgenre).
     /// </summary>
     [JsonPropertyName("parentid")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? ParentId { get; set; }
 
     /// <summary>
@@ -470,6 +477,7 @@ public class GameMedia
     /// File size in bytes.
     /// </summary>
     [JsonPropertyName("size")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? Size { get; set; }
 
     /// <summary>
@@ -488,30 +496,35 @@ public class GameMedia
     /// Support index for multi-disc or multi-support media (e.g., CD1, Disk2).
     /// </summary>
     [JsonPropertyName("support")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? Support { get; set; }
 
     /// <summary>
     /// Vertical position hint for displaying the media.
     /// </summary>
     [JsonPropertyName("posh")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? PosH { get; set; }
 
     /// <summary>
     /// Width value for layout positioning of the media.
     /// </summary>
     [JsonPropertyName("posw")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? PosW { get; set; }
 
     /// <summary>
     /// Horizontal position X value for display.
     /// </summary>
     [JsonPropertyName("posx")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? PosX { get; set; }
 
     /// <summary>
     /// Vertical position Y value for display.
     /// </summary>
     [JsonPropertyName("posy")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? PosY { get; set; }
 
     /// <summary>
@@ -597,6 +610,7 @@ public class GameRom
     /// ID of the parent ROM (if this ROM is a clone).
     /// </summary>
     [JsonPropertyName("romcloneof")]
+    [JsonConverter(typeof(JsonInt32Converter))]
     public Int32? CloneOf { get; set; }
 
     /// <summary>
